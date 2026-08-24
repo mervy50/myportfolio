@@ -1,5 +1,18 @@
 # Direction créative du portfolio
 
+## Références confirmées — spécification de référence
+
+Les captures fournies par l’utilisateur constituent la référence visuelle principale. Le portfolio doit adopter une interface sombre, compacte et technique, avec une navigation flottante, une grille de fond discrète, des cartes graphite, des bordures fines, des onglets segmentés et une hiérarchie proche d’un dashboard personnel premium. La référence privilégie la lisibilité, les blocs modulaires, les transitions sobres et l’utilisation de l’aqua comme accent d’action ou d’état actif.
+
+Choix confirmés par l’utilisateur :
+
+- **Aqua :** lumineux, proche de `#63E6E8`.
+- **Fond :** noir légèrement bleuté, proche de `#080A0C`.
+- **Accueil :** photo, nom, rôle et informations complémentaires.
+- **Architecture :** plusieurs pages, avec une page Portfolio structurée par onglets.
+
+
+
 ## Trois pistes initiales
 
 ### Piste 1 — Le Minimaliste Élégant
@@ -17,10 +30,14 @@ Un portfolio proche d’un laboratoire numérique, organisé autour des études 
 
 **Probability:** 0.09
 
-## Direction retenue — L’Interactif & Immersif
+## Direction initiale remplacée
+
+La direction éditoriale corail/encre de la première version est abandonnée. Elle ne doit plus guider la refonte.
+
+## Direction retenue — Portfolio technique aqua/noir
 
 ### Design Movement
-**Editorial digital expérimental**, influencé par les portfolios de studios créatifs, les affiches culturelles contemporaines et les interfaces éditoriales cinétiques. L’expérience doit être expressive sans devenir décorative au point de nuire au contenu.
+**Tech noir minimal / dashboard personnel premium**, influencé par les interfaces de développeurs montrées dans les références : surfaces sombres, grille technique, cartes modulaires, typographie nette et interactions discrètes. L’expérience doit être personnelle et élégante, mais rester très lisible et orientée contenu.
 
 ### Core Principles
 1. **Le mouvement explique la structure.** Les animations servent à révéler les relations entre les projets, les compétences et le parcours, plutôt qu’à ajouter des effets gratuits.
@@ -29,7 +46,7 @@ Un portfolio proche d’un laboratoire numérique, organisé autour des études 
 4. **La curiosité est récompensée.** Les survols, filtres et détails progressifs donnent envie d’explorer sans créer de parcours caché ou inaccessible.
 
 ### Color Philosophy
-La base est un **bleu encre profond** qui donne de la concentration et de la profondeur aux visuels. Il est réveillé par un **corail solaire** comme couleur de signature : énergique, humain et mémorable, sans basculer dans le néon. Des touches de crème chaude servent de respiration éditoriale et rendent les longs textes plus accueillants. Le contraste doit évoquer un carnet de recherche numérique : sérieux dans sa structure, vivant dans ses annotations.
+La base est un **noir légèrement bleuté** qui crée une atmosphère professionnelle et met en avant la photo, les cartes et les informations techniques. L’**aqua lumineux** devient la signature de l’identité : il sert à signaler les liens, l’onglet actif, les icônes, les indicateurs et les actions principales. Le contraste est volontairement maîtrisé : l’aqua attire l’œil sans transformer l’interface en écran néon.
 
 ### Layout Paradigm
 Une page d’accueil en défilement vertical, organisée comme une succession de scènes. Le hero adopte une composition en deux plans : déclaration typographique à gauche et objet visuel abstrait à droite. Les projets se présentent dans une mosaïque irrégulière à deux colonnes, avec une grande carte dominante et des cartes secondaires plus compactes. Une ligne latérale discrète indique la progression dans la page, tandis que les sections « à propos » et « contact » cassent volontairement la grille.
@@ -67,7 +84,7 @@ Exemples :
 Le logo est un symbole abstrait sans texte : une orbite ouverte traversée par un point corail, évoquant à la fois un curseur, une trajectoire et une idée en mouvement. Le motmark sera composé en Space Grotesk avec une ligature personnalisée sur la première lettre, tandis que le symbole restera utilisable seul pour le favicon.
 
 ### Signature Brand Color
-**Corail orbital — `#FF6B5E`**. Une couleur chaude, immédiatement repérable dans les CTA, les états actifs, les repères de navigation et certains détails d’illustration.
+**Aqua signal — `#63E6E8`**. Une couleur lumineuse et identifiable, réservée aux actions, aux états actifs, aux icônes importantes et aux détails de navigation.
 
 ## Règle de décision
 À chaque choix de design, vérifier : **« Est-ce que cette décision renforce la curiosité et la compréhension, ou est-ce qu’elle ajoute seulement du bruit ? »**
