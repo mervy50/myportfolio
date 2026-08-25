@@ -38,7 +38,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <a className="header-mail" href="mailto:mervylokodade50@gmail.com">mervylokodade50@gmail.com</a>
         <button type="button" className="mobile-toggle" onClick={toggleMenu} onKeyDown={handleMenuKeyDown} aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button>
       </header>
-      <div className="page-frame">{children}</div>
+      <div className="page-frame" key={location}><div className="page-transition">{children}</div></div>
       <footer className="site-footer">
         <Link href="/" className="footer-brand">MERVYLKD<span>.</span></Link>
         <span className="footer-copy">Conçu & développé avec soin · 2024</span>

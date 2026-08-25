@@ -34,7 +34,14 @@
 - [x] Ajouter un test UI couvrant tous les liens de la navbar en mode mobile : Accueil, À propos, Portfolio et Contact.
 - [x] Ajouter un test UI clavier pour le bouton mobile et la navbar : focus visible, Enter et Espace.
 - [x] Vérifier explicitement le focus visible de la navbar et du bouton mobile au clavier, puis revalider l’item clavier.
-- [ ] Ajouter une transition fluide entre les routes du portfolio en respectant prefers-reduced-motion.
-- [ ] Ajouter un fil d’Ariane accessible sur les pages de détail projet.
-- [ ] Intégrer la nouvelle photo uniquement sur la page À propos et conserver la première photo sur l’accueil.
-- [ ] Vérifier les deux portraits, les transitions et le fil d’Ariane sur desktop/mobile.
+- [x] Ajouter une transition fluide entre les routes du portfolio en respectant prefers-reduced-motion.
+- [x] Ajouter un fil d’Ariane accessible sur les pages de détail projet.
+- [x] Intégrer la nouvelle photo uniquement sur la page À propos et conserver la première photo sur l’accueil.
+- [x] Vérifier les deux portraits, les transitions et le fil d’Ariane sur desktop/mobile.
+- [x] Refaire une vérification mobile de la page d’accueil pour confirmer que le premier portrait reste correct après l’ajout du second portrait.
+- [x] Effectuer une vérification documentée des transitions entre routes sur desktop et mobile : Accueil → À propos → Détail projet.
+- [x] Tester réellement les transitions en navigation sur desktop pour le parcours Accueil → À propos → Détail projet, puis documenter le résultat.
+- [x] Tester réellement les transitions en navigation sur mobile pour le parcours Accueil → À propos → Détail projet, puis documenter le résultat.
+- [x] Vérifier en navigateur desktop le parcours Accueil → À propos → Détail projet et confirmer l’animation à chaque route.
+- [x] Vérifier en navigateur mobile le parcours Accueil → À propos → Détail projet et confirmer l’animation à chaque route.
+- [x] Ajouter une vérification browser-level documentée ciblant l’apparition de `.page-transition`.

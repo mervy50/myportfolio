@@ -1,4 +1,5 @@
 /* Charte aqua/noir : home centrée sur l’identité, le rôle et l’exploration, avec hero en deux colonnes et cartes de statistiques graphite. */
+import React from "react";
 import { ArrowDownRight, ArrowUpRight, Download, Github, Linkedin, Sparkles } from "lucide-react";
 import { Link } from "wouter";
 import { profile, projects, skills } from "@/lib/portfolio-data";

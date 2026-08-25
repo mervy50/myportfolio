@@ -1,4 +1,5 @@
 /* Charte aqua/noir : showcase de projets en cartes compactes, onglets segmentés et grille technique très discrète. */
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Award, Code2, ExternalLink, FolderKanban, X } from "lucide-react";
 import { Link } from "wouter";

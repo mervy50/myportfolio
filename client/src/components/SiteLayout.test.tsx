@@ -18,15 +18,25 @@ afterEach(() => {
 });
 
 describe("SiteLayout navigation", () => {
+  it("wraps route content with the page transition contract", () => {
+    renderLayout();
+    expect(document.querySelector(".page-transition")).not.toBeNull();
+    const stylesheet = readFileSync(path.resolve(import.meta.dirname, "../index.css"), "utf8");
+    expect(stylesheet).toContain(".page-transition { animation: pageEnter");
+    expect(stylesheet).toContain("@media (prefers-reduced-motion: reduce) { .page-transition");
+  });
+
   it("navigates with a click and no longer displays section numbers", async () => {
     const user = userEvent.setup();
     renderLayout();
     const navigation = screen.getByRole("navigation", { name: "Navigation principale" });
+    const initialFrame = document.querySelector(".page-frame");
 
     expect(within(navigation).queryByText(/0[1-4]/)).toBeNull();
     await user.click(within(navigation).getByRole("link", { name: "À propos" }));
 
     expect(window.location.pathname).toBe("/about");
+    expect(document.querySelector(".page-frame")).not.toBe(initialFrame);
   });
 
   it("opens the mobile menu and supports keyboard activation", async () => {
