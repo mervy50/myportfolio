@@ -26,3 +26,11 @@
 - [x] Tester la configuration SMTP, le téléchargement du CV et le rendu photo sur desktop/mobile.
 - [x] Vérifier l’accessibilité de l’URL de téléchargement du CV PDF depuis le bouton dédié.
 - [x] Refaire les contrôles mobile après intégration de la photo sur l’accueil et la page À propos.
+- [x] Corriger la barre de navigation : liens desktop et mobile cliquables vers les bonnes routes.
+- [x] Retirer les numéros 01, 02, 03 et 04 des libellés de la navbar.
+- [x] Vérifier la navigation au clavier, le menu mobile et les routes principales après correction.
+- [x] Tester réellement la navbar corrigée sur mobile : ouverture, fermeture et clic sur chaque lien.
+- [x] Vérifier au clavier le focus visible, Enter/Espace et le bouton du menu mobile.
+- [x] Ajouter un test UI couvrant tous les liens de la navbar en mode mobile : Accueil, À propos, Portfolio et Contact.
+- [x] Ajouter un test UI clavier pour le bouton mobile et la navbar : focus visible, Enter et Espace.
+- [x] Vérifier explicitement le focus visible de la navbar et du bouton mobile au clavier, puis revalider l’item clavier.

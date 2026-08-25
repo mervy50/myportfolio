@@ -1,5 +1,5 @@
 /* Charte aqua/noir : interface tech sombre, navigation compacte, cartes graphite et aqua signal réservé aux actions. */
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
 
@@ -12,7 +12,18 @@ const links = [
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
+  const handleNavigation = (href: string) => {
+    setMenuOpen(false);
+    if (location !== href) navigate(href);
+  };
+  const toggleMenu = () => setMenuOpen(open => !open);
+  const handleMenuKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === " ") {
+      event.preventDefault();
+      toggleMenu();
+    }
+  };
   return (
     <div className="app-shell">
       <div className="grid-noise" aria-hidden="true" />
@@ -21,11 +32,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <span className="logo-orbit"><span /></span>
           <span className="logo-name">LOKO<span>-DADE</span><b>.</b></span>
         </Link>
-        <nav className={menuOpen ? "site-nav is-open" : "site-nav"} aria-label="Navigation principale">
-          {links.map((link, index) => <Link key={link.href} href={link.href} className={location === link.href ? "active" : ""} onClick={() => setMenuOpen(false)}><span>{link.label}</span><small>0{index + 1}</small></Link>)}
+        <nav id="main-navigation" className={menuOpen ? "site-nav is-open" : "site-nav"} aria-label="Navigation principale">
+          {links.map(link => <a key={link.href} href={link.href} className={location === link.href ? "active" : ""} aria-current={location === link.href ? "page" : undefined} onClick={event => { event.preventDefault(); handleNavigation(link.href); }}><span>{link.label}</span></a>)}
         </nav>
         <a className="header-mail" href="mailto:mervylokodade50@gmail.com">mervylokodade50@gmail.com</a>
-        <button className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button>
+        <button type="button" className="mobile-toggle" onClick={toggleMenu} onKeyDown={handleMenuKeyDown} aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button>
       </header>
       <div className="page-frame">{children}</div>
       <footer className="site-footer">
