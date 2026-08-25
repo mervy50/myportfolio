@@ -35,3 +35,32 @@ export const contactMessages = mysqlTable("contact_messages", {
 
 export type ContactMessage = typeof contactMessages.$inferSelect;
 export type InsertContactMessage = typeof contactMessages.$inferInsert;
+
+export const portfolioProjects = mysqlTable("portfolio_projects", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 120 }).notNull().unique(),
+  title: varchar("title", { length: 160 }).notNull(),
+  type: varchar("type", { length: 160 }).notNull(),
+  year: varchar("year", { length: 4 }).notNull(),
+  description: text("description").notNull(),
+  stack: text("stack").notNull(),
+  status: varchar("status", { length: 120 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PortfolioProject = typeof portfolioProjects.$inferSelect;
+export type InsertPortfolioProject = typeof portfolioProjects.$inferInsert;
+
+export const portfolioCertifications = mysqlTable("portfolio_certifications", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 200 }).notNull(),
+  provider: varchar("provider", { length: 160 }).notNull(),
+  year: varchar("year", { length: 4 }),
+  description: text("description"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PortfolioCertification = typeof portfolioCertifications.$inferSelect;
+export type InsertPortfolioCertification = typeof portfolioCertifications.$inferInsert;

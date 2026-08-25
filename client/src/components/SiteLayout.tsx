@@ -41,7 +41,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <div className="page-frame" key={location}><div className="page-transition">{children}</div></div>
       <footer className="site-footer">
         <Link href="/" className="footer-brand">MERVYLKD<span>.</span></Link>
-        <span className="footer-copy">Conçu & développé avec soin · 2024</span>
+        <span className="footer-copy">Conçu & développé avec soin · 2024</span><Link href="/admin" className="footer-admin">Admin</Link>
         <div className="footer-links"><a href="https://github.com/mervy50" aria-label="GitHub"><Github size={16} /></a><a href="https://www.linkedin.com/in/merveille-loko-dade-8728b1352/" aria-label="LinkedIn"><Linkedin size={16} /></a><a href="mailto:mervylokodade50@gmail.com" aria-label="Email"><Mail size={16} /></a></div>
       </footer>
     </div>

@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { contactMessages, InsertContactMessage, InsertUser, users } from "../drizzle/schema";
+import { contactMessages, InsertContactMessage, InsertPortfolioCertification, InsertPortfolioProject, InsertUser, portfolioCertifications, portfolioProjects, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -94,4 +94,65 @@ export async function createContactMessage(message: InsertContactMessage) {
   if (!db) throw new Error("Database unavailable");
   const result = await db.insert(contactMessages).values(message);
   return { id: Number(result[0].insertId) };
+}
+
+export async function listPortfolioProjects() {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.select().from(portfolioProjects).orderBy(desc(portfolioProjects.createdAt));
+}
+
+export async function getPortfolioProjectBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const rows = await db.select().from(portfolioProjects).where(eq(portfolioProjects.slug, slug)).limit(1);
+  return rows[0];
+}
+
+export async function createPortfolioProject(project: InsertPortfolioProject) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(portfolioProjects).values(project);
+  return { id: Number(result[0].insertId) };
+}
+
+export async function updatePortfolioProject(id: number, project: Partial<InsertPortfolioProject>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(portfolioProjects).set(project).where(eq(portfolioProjects.id, id));
+  return { id };
+}
+
+export async function deletePortfolioProject(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(portfolioProjects).where(eq(portfolioProjects.id, id));
+  return { id };
+}
+
+export async function listPortfolioCertifications() {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.select().from(portfolioCertifications).orderBy(desc(portfolioCertifications.createdAt));
+}
+
+export async function createPortfolioCertification(certification: InsertPortfolioCertification) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(portfolioCertifications).values(certification);
+  return { id: Number(result[0].insertId) };
+}
+
+export async function updatePortfolioCertification(id: number, certification: Partial<InsertPortfolioCertification>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(portfolioCertifications).set(certification).where(eq(portfolioCertifications.id, id));
+  return { id };
+}
+
+export async function deletePortfolioCertification(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(portfolioCertifications).where(eq(portfolioCertifications.id, id));
+  return { id };
 }

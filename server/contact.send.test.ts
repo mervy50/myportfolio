@@ -2,10 +2,30 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   createContactMessage: vi.fn(),
+  createPortfolioCertification: vi.fn(),
+  createPortfolioProject: vi.fn(),
+  deletePortfolioCertification: vi.fn(),
+  deletePortfolioProject: vi.fn(),
+  getPortfolioProjectBySlug: vi.fn(),
+  listPortfolioCertifications: vi.fn(),
+  listPortfolioProjects: vi.fn(),
+  updatePortfolioCertification: vi.fn(),
+  updatePortfolioProject: vi.fn(),
   notifyOwner: vi.fn(),
 }));
 
-vi.mock("./db", () => ({ createContactMessage: mocks.createContactMessage }));
+vi.mock("./db", () => ({
+  createContactMessage: mocks.createContactMessage,
+  createPortfolioCertification: mocks.createPortfolioCertification,
+  createPortfolioProject: mocks.createPortfolioProject,
+  deletePortfolioCertification: mocks.deletePortfolioCertification,
+  deletePortfolioProject: mocks.deletePortfolioProject,
+  getPortfolioProjectBySlug: mocks.getPortfolioProjectBySlug,
+  listPortfolioCertifications: mocks.listPortfolioCertifications,
+  listPortfolioProjects: mocks.listPortfolioProjects,
+  updatePortfolioCertification: mocks.updatePortfolioCertification,
+  updatePortfolioProject: mocks.updatePortfolioProject,
+}));
 vi.mock("./_core/notification", () => ({ notifyOwner: mocks.notifyOwner }));
 
 import { appRouter } from "./routers";

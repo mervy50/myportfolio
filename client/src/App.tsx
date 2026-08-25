@@ -7,6 +7,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import SiteLayout from "./components/SiteLayout";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import About from "./pages/About";
+import Admin from "./pages/Admin";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Portfolio from "./pages/Portfolio";
@@ -19,6 +20,7 @@ function Router() {
     <Route path="/portfolio" component={Portfolio} />
     <Route path="/portfolio/:slug" component={ProjectDetail} />
     <Route path="/contact" component={Contact} />
+    <Route path="/admin" component={Admin} />
     <Route path="/404" component={NotFound} />
     <Route component={NotFound} />
   </Switch>;

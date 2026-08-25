@@ -45,3 +45,21 @@
 - [x] Vérifier en navigateur desktop le parcours Accueil → À propos → Détail projet et confirmer l’animation à chaque route.
 - [x] Vérifier en navigateur mobile le parcours Accueil → À propos → Détail projet et confirmer l’animation à chaque route.
 - [x] Ajouter une vérification browser-level documentée ciblant l’apparition de `.page-transition`.
+- [x] Auditer l’état actuel de l’authentification et du panel administrateur.
+- [x] Définir les entités administrables : projets et certifications pour cette première version.
+- [x] Créer les tables et migrations nécessaires sans données fictives.
+- [x] Ajouter les procédures tRPC CRUD protégées par le rôle administrateur.
+- [x] Construire le panel admin avec listes, création, modification et suppression confirmée.
+- [x] Connecter le portfolio public aux données CRUD et ajouter les tests de permissions/opérations.
+- [x] Définir les tables persistantes `portfolio_projects` et `portfolio_certifications` sans supprimer les données existantes.
+- [x] Ajouter les helpers DB de lecture, création, modification et suppression pour projets et certifications.
+- [x] Ajouter les procédures tRPC publiques de lecture et protégées par `adminProcedure` pour les mutations.
+- [x] Créer une route `/admin` avec authentification et contrôle explicite du rôle `admin`.
+- [x] Construire le panel CRUD pour projets et certifications avec formulaires, édition, suppression confirmée et états d’erreur.
+- [x] Connecter les pages Portfolio et détail projet aux données de la base avec gestion loading/empty/error.
+- [x] Ajouter les tests de permissions admin et de validation des opérations CRUD sans données de test persistées.
+- [x] Ajouter de vrais états loading/error/empty sur Portfolio et ProjectDetail, au lieu de masquer les erreurs via des fallbacks statiques.
+- [x] Ajouter un empty state explicite pour la liste de projets, la liste de certifications et le cas projet introuvable.
+- [x] Ajouter des tests serveur mockés couvrant create/update/delete/list/bySlug pour projets et certifications, avec succès et échec.
+- [x] Ajouter des tests mockés d’échec pour les certifications, notamment create et update/delete.
+- [x] Ajouter des tests d’échec pour projects.bySlug/list et au moins une mutation update/delete.

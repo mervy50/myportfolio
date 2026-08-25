@@ -2,7 +2,19 @@
 import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("@/lib/trpc", () => ({
+  trpc: {
+    portfolio: {
+      projects: {
+        list: { useQuery: () => ({ data: [{ id: 1, slug: "pitchlab", title: "Pitchlab", type: "Plateforme web", year: "2024", description: "Une description de projet suffisamment longue pour le test.", stack: ["Laravel", "PHP"], status: "Projet sélectionné" }] }) },
+        bySlug: { useQuery: () => ({ data: { id: 1, slug: "pitchlab", title: "Pitchlab", type: "Plateforme web", year: "2024", description: "Une description de projet suffisamment longue pour le test.", stack: ["Laravel", "PHP"], status: "Projet sélectionné" } }) },
+      },
+      certifications: { list: { useQuery: () => ({ data: undefined }) } },
+    },
+  },
+}));
 import { Route, Switch } from "wouter";
 import SiteLayout from "./SiteLayout";
 import Home from "../pages/Home";
