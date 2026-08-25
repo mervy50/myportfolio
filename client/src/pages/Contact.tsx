@@ -1,10 +1,28 @@
-/* Charte aqua/noir : page de contact sobre et utilitaire, avec formulaire graphite et aqua réservé aux actions. */
+/* Charte aqua/noir : formulaire fonctionnel relié à la procédure tRPC publique contact.send. */
 import { FormEvent, useState } from "react";
 import { ArrowUpRight, Github, Linkedin, Mail, MapPin, Send } from "lucide-react";
 import { profile } from "@/lib/portfolio-data";
+import { trpc } from "@/lib/trpc";
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
-  const submit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); setSent(true); };
-  return <main className="inner-page contact-page"><div className="page-intro"><div><p className="kicker">04 / Contact</p><h1>Construisons<br /><span>quelque chose.</span></h1></div><p className="intro-paragraph">Une idée, un besoin ou simplement envie d’échanger ? Écrivez-moi, je vous répondrai avec plaisir.</p></div><div className="contact-layout"><form className="contact-form" onSubmit={submit}><div className="form-heading"><span>01</span><h2>Envoyer un message</h2></div><label>Votre nom<input required name="name" placeholder="Votre nom" /></label><label>Votre adresse e-mail<input required type="email" name="email" placeholder="vous@exemple.com" /></label><label>Votre message<textarea required name="message" rows={5} placeholder="Parlez-moi de votre projet..." /></label><button className="aqua-button" type="submit">{sent ? "Message préparé" : "Envoyer le message"} <Send size={16} /></button>{sent && <p className="form-success">Merci. Votre message est prêt à être envoyé — nous finaliserons la connexion e-mail ensuite.</p>}</form><aside className="contact-info"><div className="info-block"><span className="info-icon"><Mail size={17} /></span><div><small>E-mail</small><a href={`mailto:${profile.email}`}>{profile.email}</a></div></div><div className="info-block"><span className="info-icon"><MapPin size={17} /></span><div><small>Localisation</small><p>Bénin · Disponible à distance</p></div></div><div className="info-block"><span className="info-icon"><Github size={17} /></span><div><small>GitHub</small><a href={profile.github}>github.com/mervy50 <ArrowUpRight size={13} /></a></div></div><div className="info-block"><span className="info-icon"><Linkedin size={17} /></span><div><small>LinkedIn</small><a href={profile.linkedin}>Voir mon profil <ArrowUpRight size={13} /></a></div></div></aside></div></main>;
+  const mutation = trpc.contact.send.useMutation({
+    onSuccess: () => setSent(true),
+  });
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSent(false);
+    const form = new FormData(event.currentTarget);
+    try {
+      await mutation.mutateAsync({
+        name: String(form.get("name") || ""),
+        email: String(form.get("email") || ""),
+        message: String(form.get("message") || ""),
+      });
+      event.currentTarget.reset();
+    } catch {
+      // The mutation error is shown in the form without exposing server details.
+    }
+  };
+  return <main className="inner-page contact-page"><div className="page-intro"><div><p className="kicker">04 / Contact</p><h1>Construisons<br /><span>quelque chose.</span></h1></div><p className="intro-paragraph">Une idée, un besoin ou simplement envie d’échanger ? Écrivez-moi, je vous répondrai avec plaisir.</p></div><div className="contact-layout"><form className="contact-form" onSubmit={submit} noValidate><div className="form-heading"><span>01</span><h2>Envoyer un message</h2></div><label>Votre nom<input required minLength={2} name="name" placeholder="Votre nom" /></label><label>Votre adresse e-mail<input required type="email" name="email" placeholder="vous@exemple.com" /></label><label>Votre message<textarea required minLength={10} name="message" rows={5} placeholder="Parlez-moi de votre projet..." /></label><button className="aqua-button" type="submit" disabled={mutation.isPending}>{mutation.isPending ? "Envoi en cours..." : sent ? "Message envoyé" : "Envoyer le message"} <Send size={16} /></button>{sent && <p className="form-success">Votre message a bien été enregistré. Merci pour votre prise de contact.</p>}{mutation.isError && <p className="form-error">Le message n’a pas pu être envoyé. Vérifiez les champs puis réessayez.</p>}</form><aside className="contact-info"><div className="info-block"><span className="info-icon"><Mail size={17} /></span><div><small>E-mail</small><a href={`mailto:${profile.email}`}>{profile.email}</a></div></div><div className="info-block"><span className="info-icon"><MapPin size={17} /></span><div><small>Localisation</small><p>Bénin · Disponible à distance</p></div></div><div className="info-block"><span className="info-icon"><Github size={17} /></span><div><small>GitHub</small><a href={profile.github}>github.com/mervy50 <ArrowUpRight size={13} /></a></div></div><div className="info-block"><span className="info-icon"><Linkedin size={17} /></span><div><small>LinkedIn</small><a href={profile.linkedin}>Voir mon profil <ArrowUpRight size={13} /></a></div></div></aside></div></main>;
 }
