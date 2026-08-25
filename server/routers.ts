@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import { createContactMessage } from "./db";
+import { sendContactEmail } from "./mail";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { notifyOwner } from "./_core/notification";
 import { systemRouter } from "./_core/systemRouter";
@@ -31,6 +32,7 @@ export const appRouter = router({
       .input(contactMessageInput)
       .mutation(async ({ input }) => {
         const result = await createContactMessage(input);
+        await sendContactEmail(input);
         await notifyOwner({
           title: `Nouveau message de ${input.name}`,
           content: `Email : ${input.email}\n\n${input.message}`,

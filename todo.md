@@ -19,3 +19,10 @@
 - [x] Ajouter un test d’intégration serveur pour contact.send avec succès et erreur DB simulée, sans écriture réelle de données.
 - [x] Refaire une vérification responsive mobile après les changements backend et capturer les pages concernées.
 - [x] Améliorer l’accessibilité de la modale projet avec Escape et focus initial.
+- [x] Recevoir et configurer les secrets SMTP Gmail avec une clé d’application, sans utiliser le mot de passe principal.
+- [x] Envoyer les messages du formulaire vers l’adresse Gmail de Merveille et conserver la notification propriétaire.
+- [x] Copier et publier la photo de profil fournie via le stockage webdev.
+- [x] Remplacer les portraits temporaires de l’accueil et de la page À propos par la photo réelle.
+- [x] Tester la configuration SMTP, le téléchargement du CV et le rendu photo sur desktop/mobile.
+- [x] Vérifier l’accessibilité de l’URL de téléchargement du CV PDF depuis le bouton dédié.
+- [x] Refaire les contrôles mobile après intégration de la photo sur l’accueil et la page À propos.
