@@ -34,3 +34,7 @@
 - [x] Ajouter un test UI couvrant tous les liens de la navbar en mode mobile : Accueil, À propos, Portfolio et Contact.
 - [x] Ajouter un test UI clavier pour le bouton mobile et la navbar : focus visible, Enter et Espace.
 - [x] Vérifier explicitement le focus visible de la navbar et du bouton mobile au clavier, puis revalider l’item clavier.
+- [ ] Ajouter une transition fluide entre les routes du portfolio en respectant prefers-reduced-motion.
+- [ ] Ajouter un fil d’Ariane accessible sur les pages de détail projet.
+- [ ] Intégrer la nouvelle photo uniquement sur la page À propos et conserver la première photo sur l’accueil.
+- [ ] Vérifier les deux portraits, les transitions et le fil d’Ariane sur desktop/mobile.
