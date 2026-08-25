@@ -63,3 +63,11 @@
 - [x] Ajouter des tests serveur mockés couvrant create/update/delete/list/bySlug pour projets et certifications, avec succès et échec.
 - [x] Ajouter des tests mockés d’échec pour les certifications, notamment create et update/delete.
 - [x] Ajouter des tests d’échec pour projects.bySlug/list et au moins une mutation update/delete.
+- [x] Ajouter une table persistante pour le profil éditable et une table pour les compétences techniques groupées.
+- [x] Ajouter un champ `displayOrder` aux projets et une mutation admin de réordonnancement.
+- [x] Ajouter les procédures tRPC publiques/admin pour lire et modifier profil et compétences.
+- [x] Construire les formulaires admin du profil et des compétences avec création, modification et suppression.
+- [x] Ajouter le glisser-déposer des projets avec sauvegarde de l’ordre et alternative clavier.
+- [x] Connecter l’accueil, À propos et Tech Stack aux données dynamiques du profil et des compétences.
+- [x] Ajouter les tests de permissions, CRUD profil/compétences et réordonnancement des projets.
+- [x] Intégrer le panel admin au DashboardLayout partagé et vérifier le build de production.

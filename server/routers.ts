@@ -7,10 +7,18 @@ import {
   deletePortfolioCertification,
   deletePortfolioProject,
   getPortfolioProjectBySlug,
+  getPortfolioProfile,
+  deletePortfolioProfile,
   listPortfolioCertifications,
   listPortfolioProjects,
+  listPortfolioSkills,
+  reorderPortfolioProjects,
   updatePortfolioCertification,
   updatePortfolioProject,
+  upsertPortfolioProfile,
+  createPortfolioSkill,
+  deletePortfolioSkill,
+  updatePortfolioSkill,
 } from "./db";
 import { sendContactEmail } from "./mail";
 import { getSessionCookieOptions } from "./_core/cookies";
@@ -34,6 +42,24 @@ const projectInput = z.object({
   stack: z.string().trim().min(2).max(500),
   status: z.string().trim().min(2).max(120),
 });
+const profileInput = z.object({
+  name: z.string().trim().min(2).max(200),
+  role: z.string().trim().min(2).max(160),
+  bio: z.string().trim().min(20).max(5000),
+  email: z.string().trim().email().max(320),
+  github: z.string().trim().url().max(320),
+  linkedin: z.string().trim().url().max(320),
+  photoUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+  aboutPhotoUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+  cvUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+});
+const skillInput = z.object({
+  groupName: z.string().trim().min(2).max(120),
+  name: z.string().trim().min(2).max(120),
+  displayOrder: z.number().int().min(0).default(0),
+});
+const reorderInput = z.object({ order: z.array(z.object({ id: z.number().int().positive(), displayOrder: z.number().int().min(0) })).min(1).max(100) });
+
 const certificationInput = z.object({
   title: z.string().trim().min(2).max(200),
   provider: z.string().trim().min(2).max(160),
@@ -61,6 +87,17 @@ export const appRouter = router({
   }),
 
   portfolio: router({
+    profile: router({
+      get: publicProcedure.query(getPortfolioProfile),
+      update: adminProcedure.input(profileInput).mutation(async ({ input }) => upsertPortfolioProfile(input)),
+      delete: adminProcedure.mutation(deletePortfolioProfile),
+    }),
+    skills: router({
+      list: publicProcedure.query(listPortfolioSkills),
+      create: adminProcedure.input(skillInput).mutation(async ({ input }) => createPortfolioSkill(input)),
+      update: adminProcedure.input(idInput.extend({ data: skillInput.partial() })).mutation(async ({ input }) => updatePortfolioSkill(input.id, input.data)),
+      delete: adminProcedure.input(idInput).mutation(async ({ input }) => deletePortfolioSkill(input.id)),
+    }),
     projects: router({
       list: publicProcedure.query(async () => (await listPortfolioProjects()).map(toPublicProject)),
       bySlug: publicProcedure.input(z.object({ slug: z.string().min(2).max(120) })).query(async ({ input }) => {
@@ -70,6 +107,7 @@ export const appRouter = router({
       create: adminProcedure.input(projectInput).mutation(async ({ input }) => createPortfolioProject(input)),
       update: adminProcedure.input(idInput.extend({ data: projectInput.partial() })).mutation(async ({ input }) => updatePortfolioProject(input.id, input.data)),
       delete: adminProcedure.input(idInput).mutation(async ({ input }) => deletePortfolioProject(input.id)),
+      reorder: adminProcedure.input(reorderInput).mutation(async ({ input }) => reorderPortfolioProjects(input.order)),
     }),
     certifications: router({
       list: publicProcedure.query(listPortfolioCertifications),

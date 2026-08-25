@@ -4,7 +4,9 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("@/lib/trpc", () => ({ trpc: { portfolio: { profile: { get: { useQuery: () => ({ data: { email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example" } }) } } } } }));
 import SiteLayout from "./SiteLayout";
 
 function renderLayout() {

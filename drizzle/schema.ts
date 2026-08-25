@@ -45,6 +45,7 @@ export const portfolioProjects = mysqlTable("portfolio_projects", {
   description: text("description").notNull(),
   stack: text("stack").notNull(),
   status: varchar("status", { length: 120 }).notNull(),
+  displayOrder: int("displayOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -64,3 +65,32 @@ export const portfolioCertifications = mysqlTable("portfolio_certifications", {
 
 export type PortfolioCertification = typeof portfolioCertifications.$inferSelect;
 export type InsertPortfolioCertification = typeof portfolioCertifications.$inferInsert;
+
+export const portfolioProfile = mysqlTable("portfolio_profile", {
+  id: int("id").primaryKey(),
+  name: varchar("name", { length: 200 }).notNull(),
+  role: varchar("role", { length: 160 }).notNull(),
+  bio: text("bio").notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  github: varchar("github", { length: 320 }).notNull(),
+  linkedin: varchar("linkedin", { length: 320 }).notNull(),
+  photoUrl: varchar("photoUrl", { length: 500 }),
+  aboutPhotoUrl: varchar("aboutPhotoUrl", { length: 500 }),
+  cvUrl: varchar("cvUrl", { length: 500 }),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PortfolioProfile = typeof portfolioProfile.$inferSelect;
+export type InsertPortfolioProfile = typeof portfolioProfile.$inferInsert;
+
+export const portfolioSkills = mysqlTable("portfolio_skills", {
+  id: int("id").autoincrement().primaryKey(),
+  groupName: varchar("groupName", { length: 120 }).notNull(),
+  name: varchar("name", { length: 120 }).notNull(),
+  displayOrder: int("displayOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PortfolioSkill = typeof portfolioSkills.$inferSelect;
+export type InsertPortfolioSkill = typeof portfolioSkills.$inferInsert;

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 const links = [
   { href: "/", label: "Accueil" },
@@ -13,6 +14,8 @@ const links = [
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location, navigate] = useLocation();
+  const profileQuery = trpc.portfolio.profile.get.useQuery();
+  const profile = profileQuery.data;
   const handleNavigation = (href: string) => {
     setMenuOpen(false);
     if (location !== href) navigate(href);
@@ -35,14 +38,14 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <nav id="main-navigation" className={menuOpen ? "site-nav is-open" : "site-nav"} aria-label="Navigation principale">
           {links.map(link => <a key={link.href} href={link.href} className={location === link.href ? "active" : ""} aria-current={location === link.href ? "page" : undefined} onClick={event => { event.preventDefault(); handleNavigation(link.href); }}><span>{link.label}</span></a>)}
         </nav>
-        <a className="header-mail" href="mailto:mervylokodade50@gmail.com">mervylokodade50@gmail.com</a>
+        {profile?.email && <a className="header-mail" href={`mailto:${profile.email}`}>{profile.email}</a>}
         <button type="button" className="mobile-toggle" onClick={toggleMenu} onKeyDown={handleMenuKeyDown} aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button>
       </header>
       <div className="page-frame" key={location}><div className="page-transition">{children}</div></div>
       <footer className="site-footer">
         <Link href="/" className="footer-brand">MERVYLKD<span>.</span></Link>
         <span className="footer-copy">Conçu & développé avec soin · 2024</span><Link href="/admin" className="footer-admin">Admin</Link>
-        <div className="footer-links"><a href="https://github.com/mervy50" aria-label="GitHub"><Github size={16} /></a><a href="https://www.linkedin.com/in/merveille-loko-dade-8728b1352/" aria-label="LinkedIn"><Linkedin size={16} /></a><a href="mailto:mervylokodade50@gmail.com" aria-label="Email"><Mail size={16} /></a></div>
+        <div className="footer-links">{profile?.github && <a href={profile.github} aria-label="GitHub"><Github size={16} /></a>}{profile?.linkedin && <a href={profile.linkedin} aria-label="LinkedIn"><Linkedin size={16} /></a>}{profile?.email && <a href={`mailto:${profile.email}`} aria-label="Email"><Mail size={16} /></a>}</div>
       </footer>
     </div>
   );

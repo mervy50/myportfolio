@@ -1,0 +1,1 @@
+ALTER TABLE `portfolio_profile` ADD `aboutPhotoUrl` varchar(500);

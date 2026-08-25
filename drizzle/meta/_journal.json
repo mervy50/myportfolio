@@ -15,6 +15,20 @@
       "when": 1787685327261,
       "tag": "0001_open_magma",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1787686915015,
+      "tag": "0002_same_earthquake",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1787687480953,
+      "tag": "0003_gifted_titanium_man",
+      "breakpoints": true
     }
   ]
 }
