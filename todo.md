@@ -101,3 +101,12 @@
 - [x] Vérifier le rendu responsive et enregistrer un checkpoint après la modification.
 
 - [x] Enregistrer un checkpoint après le déplacement du bouton CV vers la page À propos, une fois la validation responsive terminée.
+
+- [x] Ajouter une image d’attestation administrable à chaque certification.
+- [x] Mettre en place l’import d’images via le stockage sécurisé et enregistrer l’URL en base.
+- [x] Afficher un aperçu et un accès à l’attestation dans l’onglet Certifications.
+- [x] Remplacer « Ouvrir l’étude de cas » par « Découvrir les détails » dans l’aperçu rapide.
+- [x] Ajouter les tests de certification et du nouveau libellé projet.
+- [x] Vérifier le rendu responsive et enregistrer un checkpoint après validation.
+
+- [x] Enregistrer un nouveau checkpoint après l’import d’attestations, l’affichage public et le CTA « Découvrir les détails » validés.

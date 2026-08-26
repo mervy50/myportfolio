@@ -60,6 +60,7 @@ export const portfolioCertifications = mysqlTable("portfolio_certifications", {
   provider: varchar("provider", { length: 160 }).notNull(),
   year: varchar("year", { length: 4 }),
   description: text("description"),
+  attestationImageUrl: varchar("attestationImageUrl", { length: 500 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

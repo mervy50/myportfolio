@@ -1,0 +1,1 @@
+ALTER TABLE `portfolio_certifications` ADD `attestationImageUrl` varchar(500);

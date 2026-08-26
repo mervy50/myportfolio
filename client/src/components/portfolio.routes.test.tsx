@@ -11,7 +11,7 @@ vi.mock("@/lib/trpc", () => ({
         list: { useQuery: () => ({ data: [{ id: 1, slug: "pitchlab", title: "Pitchlab", type: "Plateforme web", year: "2024", description: "Une description de projet suffisamment longue pour le test.", stack: ["Laravel", "PHP"], status: "Projet sélectionné" }] }) },
         bySlug: { useQuery: () => ({ data: { id: 1, slug: "pitchlab", title: "Pitchlab", type: "Plateforme web", year: "2024", description: "Une description de projet suffisamment longue pour le test.", stack: ["Laravel", "PHP"], status: "Projet sélectionné" } }) },
       },
-      certifications: { list: { useQuery: () => ({ data: undefined }) } },
+      certifications: { list: { useQuery: () => ({ data: [{ id: 2, title: "KAS DIGIT", provider: "KAS", year: "2025", description: "Certification test.", attestationImageUrl: "/manus-storage/attestation.png" }] }) } },
       profile: { get: { useQuery: () => ({ data: { id: 1, name: "Merveille Elise LOKO-DADE", role: "Full-Stack Developer", bio: "Une présentation suffisamment longue pour le test.", email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example", photoUrl: null, aboutPhotoUrl: null, cvUrl: "/cv.pdf" } }) } },
       skills: { list: { useQuery: () => ({ data: [{ id: 1, groupName: "Frontend", name: "React.js", displayOrder: 0 }] }) } },
       analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) }, trackCvDownload: { useMutation: () => ({ mutate: vi.fn() }) }, trackSocialClick: { useMutation: () => ({ mutate: vi.fn() }) } },
@@ -56,7 +56,7 @@ async function runJourney(viewport: number) {
   expect(screen.getByRole("heading", { name: /Portfolio/ })).toBeTruthy();
 
   await user.click(screen.getByRole("button", { name: "Prévisualiser Pitchlab" }));
-  await user.click(screen.getByRole("link", { name: /Ouvrir l’étude de cas/ }));
+  await user.click(screen.getByRole("link", { name: /Découvrir les détails/ }));
 
   expect(window.location.pathname).toBe("/portfolio/pitchlab");
   expect(screen.getByRole("navigation", { name: "breadcrumb" })).toBeTruthy();
@@ -75,5 +75,15 @@ describe("portfolio route transitions", () => {
 
   it("completes the mobile journey Accueil → À propos → Détail projet", async () => {
     await runJourney(390);
+  });
+
+  it("affiche les images d’attestation dans l’onglet Certifications", async () => {
+    window.history.pushState({}, "", "/portfolio");
+    const user = userEvent.setup();
+    render(<PortfolioRoutes />);
+
+    await user.click(screen.getByRole("tab", { name: "Certifications" }));
+    expect(screen.getByRole("img", { name: "Attestation de KAS DIGIT" }).getAttribute("src")).toBe("/manus-storage/attestation.png");
+    expect(screen.getByRole("link", { name: /Voir l’attestation/ }).getAttribute("href")).toBe("/manus-storage/attestation.png");
   });
 });

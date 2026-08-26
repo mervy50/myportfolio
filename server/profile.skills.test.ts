@@ -24,6 +24,7 @@ const mocks = vi.hoisted(() => ({
   updatePortfolioCertification: vi.fn(),
   updatePortfolioProject: vi.fn(),
   updatePortfolioSkill: vi.fn(),
+  uploadPortfolioCertificationAttestation: vi.fn(),
 }));
 
 vi.mock("./db", () => mocks);
@@ -84,6 +85,16 @@ describe("profile, skills and project ordering", () => {
     expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(2, { eventType: "cv_download", sessionId: "session-1234567890", path: "/" });
     expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(3, { eventType: "github_click", sessionId: "session-1234567890", path: "/contact" });
     expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(4, { eventType: "linkedin_click", sessionId: "session-1234567890", path: "/contact" });
+  });
+
+  it("importe une attestation uniquement pour un administrateur", async () => {
+    mocks.uploadPortfolioCertificationAttestation.mockResolvedValue({ key: "portfolio/certifications/attestations/test.png", url: "/manus-storage/portfolio/certifications/attestations/test.png" });
+    const payload = { fileName: "attestation.png", mimeType: "image/png" as const, dataUrl: "data:image/png;base64,ZmFrZQ==" };
+    const adminCaller = appRouter.createCaller(context());
+    const userCaller = appRouter.createCaller(context("user"));
+    await expect(adminCaller.portfolio.certifications.uploadAttestation(payload)).resolves.toEqual({ key: "portfolio/certifications/attestations/test.png", url: "/manus-storage/portfolio/certifications/attestations/test.png" });
+    await expect(userCaller.portfolio.certifications.uploadAttestation(payload)).rejects.toThrow();
+    expect(mocks.uploadPortfolioCertificationAttestation).toHaveBeenCalledWith(payload);
   });
 
   it("consulte et gère la boîte de réception uniquement pour un administrateur", async () => {

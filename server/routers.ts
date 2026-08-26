@@ -24,6 +24,7 @@ import {
   createPortfolioSkill,
   deletePortfolioSkill,
   updatePortfolioSkill,
+  uploadPortfolioCertificationAttestation,
 } from "./db";
 import { sendContactEmail } from "./mail";
 import { getSessionCookieOptions } from "./_core/cookies";
@@ -72,6 +73,12 @@ const certificationInput = z.object({
   provider: z.string().trim().min(2).max(160),
   year: z.string().trim().regex(/^\d{4}$/).optional().or(z.literal("")),
   description: z.string().trim().max(2000).optional(),
+  attestationImageUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+});
+const certificationAttestationUploadInput = z.object({
+  fileName: z.string().trim().min(1).max(200),
+  mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+  dataUrl: z.string().max(11_200_000),
 });
 
 const toPublicProject = (project: Awaited<ReturnType<typeof listPortfolioProjects>>[number]) => ({
@@ -124,6 +131,7 @@ export const appRouter = router({
     }),
     certifications: router({
       list: publicProcedure.query(listPortfolioCertifications),
+      uploadAttestation: adminProcedure.input(certificationAttestationUploadInput).mutation(async ({ input }) => uploadPortfolioCertificationAttestation(input)),
       create: adminProcedure.input(certificationInput).mutation(async ({ input }) => createPortfolioCertification(input)),
       update: adminProcedure.input(idInput.extend({ data: certificationInput.partial() })).mutation(async ({ input }) => updatePortfolioCertification(input.id, input.data)),
       delete: adminProcedure.input(idInput).mutation(async ({ input }) => deletePortfolioCertification(input.id)),

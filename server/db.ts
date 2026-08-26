@@ -2,6 +2,7 @@ import { asc, desc, eq, gte, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { contactMessages, InsertContactMessage, InsertPortfolioAnalyticsEvent, InsertPortfolioCertification, InsertPortfolioProfile, InsertPortfolioProject, InsertPortfolioSkill, InsertUser, portfolioAnalyticsEvents, portfolioCertifications, portfolioProfile, portfolioProjects, portfolioSkills, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import { storagePut } from './storage';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -154,6 +155,17 @@ export async function listPortfolioCertifications() {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   return db.select().from(portfolioCertifications).orderBy(desc(portfolioCertifications.createdAt));
+}
+
+export async function uploadPortfolioCertificationAttestation(input: { fileName: string; mimeType: string; dataUrl: string }) {
+  const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+  if (!allowedTypes.has(input.mimeType)) throw new Error("Format d’image non pris en charge");
+  const match = input.dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+  if (!match || match[1] !== input.mimeType) throw new Error("Image d’attestation invalide");
+  const buffer = Buffer.from(match[2], "base64");
+  if (!buffer.length || buffer.length > 8 * 1024 * 1024) throw new Error("L’image doit peser au maximum 8 Mo");
+  const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-120) || "attestation";
+  return storagePut(`portfolio/certifications/attestations/${Date.now()}-${safeName}`, buffer, input.mimeType);
 }
 
 export async function createPortfolioCertification(certification: InsertPortfolioCertification) {
