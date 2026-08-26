@@ -46,6 +46,11 @@ export const portfolioProjects = mysqlTable("portfolio_projects", {
   description: text("description").notNull(),
   stack: text("stack").notNull(),
   status: varchar("status", { length: 120 }).notNull(),
+  githubUrl: varchar("githubUrl", { length: 500 }),
+  detailTagline: varchar("detailTagline", { length: 240 }),
+  detailHeadline: varchar("detailHeadline", { length: 500 }),
+  detailBody: text("detailBody"),
+  detailFeatures: text("detailFeatures"),
   displayOrder: int("displayOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -84,6 +89,57 @@ export const portfolioProfile = mysqlTable("portfolio_profile", {
 
 export type PortfolioProfile = typeof portfolioProfile.$inferSelect;
 export type InsertPortfolioProfile = typeof portfolioProfile.$inferInsert;
+
+export const portfolioSiteContent = mysqlTable("portfolio_site_content", {
+  id: int("id").primaryKey(),
+  homeAvailability: varchar("homeAvailability", { length: 240 }).notNull(),
+  homeTitleLine1: varchar("homeTitleLine1", { length: 160 }).notNull(),
+  homeTitleLine2: varchar("homeTitleLine2", { length: 160 }).notNull(),
+  homeAboutTitle: varchar("homeAboutTitle", { length: 240 }).notNull(),
+  homeAboutAccent: varchar("homeAboutAccent", { length: 240 }).notNull(),
+  homeAboutCta: varchar("homeAboutCta", { length: 160 }).notNull(),
+  homeFeaturedTitle: varchar("homeFeaturedTitle", { length: 240 }).notNull(),
+  homeFeaturedAccent: varchar("homeFeaturedAccent", { length: 240 }).notNull(),
+  homeContactTitle: varchar("homeContactTitle", { length: 240 }).notNull(),
+  homeContactAccent: varchar("homeContactAccent", { length: 240 }).notNull(),
+  aboutTitleLine1: varchar("aboutTitleLine1", { length: 160 }).notNull(),
+  aboutTitleLine2: varchar("aboutTitleLine2", { length: 160 }).notNull(),
+  aboutAvailability: varchar("aboutAvailability", { length: 240 }).notNull(),
+  aboutLocation: varchar("aboutLocation", { length: 240 }).notNull(),
+  aboutQuote: varchar("aboutQuote", { length: 500 }).notNull(),
+  aboutSkillsNote: varchar("aboutSkillsNote", { length: 500 }).notNull(),
+  aboutEducationNote: varchar("aboutEducationNote", { length: 500 }).notNull(),
+  portfolioTitleLine1: varchar("portfolioTitleLine1", { length: 160 }).notNull(),
+  portfolioTitleLine2: varchar("portfolioTitleLine2", { length: 160 }).notNull(),
+  portfolioDescription: varchar("portfolioDescription", { length: 500 }).notNull(),
+  contactTitleLine1: varchar("contactTitleLine1", { length: 160 }).notNull(),
+  contactTitleLine2: varchar("contactTitleLine2", { length: 160 }).notNull(),
+  contactIntro: varchar("contactIntro", { length: 500 }).notNull(),
+  headerBrand: varchar("headerBrand", { length: 120 }).notNull(),
+  footerBrand: varchar("footerBrand", { length: 120 }).notNull(),
+  footerCopy: varchar("footerCopy", { length: 240 }).notNull(),
+  navHomeLabel: varchar("navHomeLabel", { length: 80 }).notNull(),
+  navAboutLabel: varchar("navAboutLabel", { length: 80 }).notNull(),
+  navPortfolioLabel: varchar("navPortfolioLabel", { length: 80 }).notNull(),
+  navContactLabel: varchar("navContactLabel", { length: 80 }).notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PortfolioSiteContent = typeof portfolioSiteContent.$inferSelect;
+export type InsertPortfolioSiteContent = typeof portfolioSiteContent.$inferInsert;
+
+export const portfolioEducation = mysqlTable("portfolio_education", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 240 }).notNull(),
+  place: varchar("place", { length: 160 }).notNull(),
+  year: varchar("year", { length: 4 }),
+  displayOrder: int("displayOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PortfolioEducation = typeof portfolioEducation.$inferSelect;
+export type InsertPortfolioEducation = typeof portfolioEducation.$inferInsert;
 
 export const portfolioSkills = mysqlTable("portfolio_skills", {
   id: int("id").autoincrement().primaryKey(),

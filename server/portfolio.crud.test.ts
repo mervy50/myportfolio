@@ -23,6 +23,13 @@ const mocks = vi.hoisted(() => ({
   updatePortfolioSkill: vi.fn(),
   updatePortfolioCertification: vi.fn(),
   updatePortfolioProject: vi.fn(),
+  getPortfolioSiteContent: vi.fn(),
+  upsertPortfolioSiteContent: vi.fn(),
+  listPortfolioEducation: vi.fn(),
+  createPortfolioEducation: vi.fn(),
+  updatePortfolioEducation: vi.fn(),
+  deletePortfolioEducation: vi.fn(),
+  reorderPortfolioEducation: vi.fn(),
 }));
 
 vi.mock("./db", () => mocks);

@@ -51,6 +51,13 @@ vi.mock("./db", () => ({
   updatePortfolioCertification: mocks.updatePortfolioCertification,
   updatePortfolioSkill: mocks.updatePortfolioSkill,
   updatePortfolioProject: mocks.updatePortfolioProject,
+  getPortfolioSiteContent: vi.fn(),
+  upsertPortfolioSiteContent: vi.fn(),
+  listPortfolioEducation: vi.fn(),
+  createPortfolioEducation: vi.fn(),
+  updatePortfolioEducation: vi.fn(),
+  deletePortfolioEducation: vi.fn(),
+  reorderPortfolioEducation: vi.fn(),
 }));
 vi.mock("./_core/notification", () => ({ notifyOwner: mocks.notifyOwner }));
 

@@ -25,6 +25,13 @@ import {
   deletePortfolioSkill,
   updatePortfolioSkill,
   uploadPortfolioCertificationAttestation,
+  getPortfolioSiteContent,
+  upsertPortfolioSiteContent,
+  listPortfolioEducation,
+  createPortfolioEducation,
+  updatePortfolioEducation,
+  deletePortfolioEducation,
+  reorderPortfolioEducation,
 } from "./db";
 import { sendContactEmail } from "./mail";
 import { getSessionCookieOptions } from "./_core/cookies";
@@ -47,6 +54,11 @@ const projectInput = z.object({
   description: z.string().trim().min(10).max(5000),
   stack: z.string().trim().min(2).max(500),
   status: z.string().trim().min(2).max(120),
+  githubUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+  detailTagline: z.string().trim().max(240).optional().or(z.literal("")),
+  detailHeadline: z.string().trim().max(500).optional().or(z.literal("")),
+  detailBody: z.string().trim().max(5000).optional().or(z.literal("")),
+  detailFeatures: z.string().trim().max(2000).optional().or(z.literal("")),
 });
 const profileInput = z.object({
   name: z.string().trim().min(2).max(200),
@@ -67,6 +79,10 @@ const skillInput = z.object({
 const reorderInput = z.object({ order: z.array(z.object({ id: z.number().int().positive(), displayOrder: z.number().int().min(0) })).min(1).max(100) });
 const analyticsEventInput = z.object({ sessionId: z.string().trim().min(16).max(128), path: z.string().trim().min(1).max(200) });
 const socialClickInput = analyticsEventInput.extend({ platform: z.enum(["github", "linkedin"]) });
+const siteContentInput = z.object({
+  headerBrand: z.string().trim().min(1).max(120), homeAvailability: z.string().trim().min(2).max(240), homeTitleLine1: z.string().trim().min(1).max(160), homeTitleLine2: z.string().trim().min(1).max(160), homeAboutTitle: z.string().trim().min(1).max(240), homeAboutAccent: z.string().trim().min(1).max(240), homeAboutCta: z.string().trim().min(1).max(160), homeFeaturedTitle: z.string().trim().min(1).max(240), homeFeaturedAccent: z.string().trim().min(1).max(240), homeContactTitle: z.string().trim().min(1).max(240), homeContactAccent: z.string().trim().min(1).max(240), aboutTitleLine1: z.string().trim().min(1).max(160), aboutTitleLine2: z.string().trim().min(1).max(160), aboutAvailability: z.string().trim().min(1).max(240), aboutLocation: z.string().trim().min(1).max(240), aboutQuote: z.string().trim().min(1).max(500), aboutSkillsNote: z.string().trim().min(1).max(500), aboutEducationNote: z.string().trim().min(1).max(500), portfolioTitleLine1: z.string().trim().min(1).max(160), portfolioTitleLine2: z.string().trim().min(1).max(160), portfolioDescription: z.string().trim().min(1).max(500), contactTitleLine1: z.string().trim().min(1).max(160), contactTitleLine2: z.string().trim().min(1).max(160), contactIntro: z.string().trim().min(1).max(500), footerBrand: z.string().trim().min(1).max(120), footerCopy: z.string().trim().min(1).max(240), navHomeLabel: z.string().trim().min(1).max(80), navAboutLabel: z.string().trim().min(1).max(80), navPortfolioLabel: z.string().trim().min(1).max(80), navContactLabel: z.string().trim().min(1).max(80),
+});
+const educationInput = z.object({ title: z.string().trim().min(2).max(240), place: z.string().trim().min(2).max(160), year: z.string().trim().regex(/^\d{4}$/).optional().or(z.literal("")), displayOrder: z.number().int().min(0).default(0) });
 
 const certificationInput = z.object({
   title: z.string().trim().min(2).max(200),
@@ -101,6 +117,17 @@ export const appRouter = router({
   }),
 
   portfolio: router({
+    content: router({
+      get: publicProcedure.query(getPortfolioSiteContent),
+      update: adminProcedure.input(siteContentInput).mutation(async ({ input }) => upsertPortfolioSiteContent(input)),
+    }),
+    education: router({
+      list: publicProcedure.query(listPortfolioEducation),
+      create: adminProcedure.input(educationInput).mutation(async ({ input }) => createPortfolioEducation(input)),
+      update: adminProcedure.input(idInput.extend({ data: educationInput.partial() })).mutation(async ({ input }) => updatePortfolioEducation(input.id, input.data)),
+      delete: adminProcedure.input(idInput).mutation(async ({ input }) => deletePortfolioEducation(input.id)),
+      reorder: adminProcedure.input(reorderInput).mutation(async ({ input }) => reorderPortfolioEducation(input.order)),
+    }),
     profile: router({
       get: publicProcedure.query(getPortfolioProfile),
       update: adminProcedure.input(profileInput).mutation(async ({ input }) => upsertPortfolioProfile(input)),

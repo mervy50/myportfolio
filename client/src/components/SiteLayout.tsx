@@ -4,19 +4,21 @@ import { Link, useLocation } from "wouter";
 import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { getAnalyticsSessionId } from "@/lib/analytics";
-
-const links = [
-  { href: "/", label: "Accueil" },
-  { href: "/about", label: "À propos" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/contact", label: "Contact" },
-];
+import { defaultSiteContent } from "@/lib/site-content";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location, navigate] = useLocation();
   const profileQuery = trpc.portfolio.profile.get.useQuery();
+  const contentQuery = trpc.portfolio.content.get.useQuery();
   const profile = profileQuery.data;
+  const content = contentQuery.data ?? defaultSiteContent;
+  const links = [
+    { href: "/", label: content.navHomeLabel },
+    { href: "/about", label: content.navAboutLabel },
+    { href: "/portfolio", label: content.navPortfolioLabel },
+    { href: "/contact", label: content.navContactLabel },
+  ];
   const visitTracker = trpc.portfolio.analytics.trackVisit.useMutation();
   const socialClickTracker = trpc.portfolio.analytics.trackSocialClick.useMutation();
   useEffect(() => {
@@ -47,7 +49,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <header className="site-header">
         <Link href="/" className="site-logo" onClick={() => setMenuOpen(false)}>
           <span className="logo-orbit"><span /></span>
-          <span className="logo-name">LOKO<span>-DADE</span><b>.</b></span>
+          <span className="logo-name">{content.headerBrand}</span>
         </Link>
         <nav id="main-navigation" className={menuOpen ? "site-nav is-open" : "site-nav"} aria-label="Navigation principale">
           {links.map(link => <a key={link.href} href={link.href} className={location === link.href ? "active" : ""} aria-current={location === link.href ? "page" : undefined} onClick={event => { event.preventDefault(); handleNavigation(link.href); }}><span>{link.label}</span></a>)}
@@ -57,8 +59,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </header>
       <div className="page-frame" key={location}><div className="page-transition">{children}</div></div>
       <footer className="site-footer">
-        <Link href="/" className="footer-brand">MERVYLKD<span>.</span></Link>
-        <span className="footer-copy">Conçu & développé avec soin · 2024</span><Link href="/admin" className="footer-admin">Admin</Link>
+        <Link href="/" className="footer-brand">{content.footerBrand}</Link>
+        <span className="footer-copy">{content.footerCopy}</span><Link href="/admin" className="footer-admin">Admin</Link>
         <div className="footer-links">{profile?.github && <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" onClick={() => trackSocialClick("github")}><Github size={16} /></a>}{profile?.linkedin && <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" onClick={() => trackSocialClick("linkedin")}><Linkedin size={16} /></a>}{profile?.email && <a href={`mailto:${profile.email}`} aria-label="Email"><Mail size={16} /></a>}</div>
       </footer>
     </div>

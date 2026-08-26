@@ -13,7 +13,9 @@ vi.mock("@/lib/trpc", () => ({
       },
       certifications: { list: { useQuery: () => ({ data: [{ id: 2, title: "KAS DIGIT", provider: "KAS", year: "2025", description: "Certification test.", attestationImageUrl: "/manus-storage/attestation.png" }] }) } },
       profile: { get: { useQuery: () => ({ data: { id: 1, name: "Merveille Elise LOKO-DADE", role: "Full-Stack Developer", bio: "Une présentation suffisamment longue pour le test.", email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example", photoUrl: null, aboutPhotoUrl: null, cvUrl: "/cv.pdf" } }) } },
+      content: { get: { useQuery: () => ({ data: { headerBrand: "EDITED.", homeAvailability: "Disponible", homeTitleLine1: "Full-Stack", homeTitleLine2: "Developer.", homeAboutTitle: "Des idées utiles.", homeAboutAccent: "Du code qui compte.", homeAboutCta: "Découvrir", homeFeaturedTitle: "Ce que je construis", homeFeaturedAccent: "en ce moment.", homeContactTitle: "Un projet ?", homeContactAccent: "Parlons-en.", aboutTitleLine1: "Une développeuse", aboutTitleLine2: "orientée impact.", aboutAvailability: "Disponible", aboutLocation: "Bénin", aboutQuote: "Une citation.", aboutSkillsNote: "Compétences.", aboutEducationNote: "Formations.", portfolioTitleLine1: "Portfolio", portfolioTitleLine2: "Showcase", portfolioDescription: "Mes projets.", contactTitleLine1: "Construisons", contactTitleLine2: "quelque chose.", contactIntro: "Écrivez-moi.", footerBrand: "MERVYLKD.", footerCopy: "Avec soin.", navHomeLabel: "Accueil édité", navAboutLabel: "À propos", navPortfolioLabel: "Portfolio", navContactLabel: "Contact" } }) } },
       skills: { list: { useQuery: () => ({ data: [{ id: 1, groupName: "Frontend", name: "React.js", displayOrder: 0 }] }) } },
+      education: { list: { useQuery: () => ({ data: [{ id: 1, title: "Licence", place: "Université", year: "2024", displayOrder: 0 }] }) } },
       analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) }, trackCvDownload: { useMutation: () => ({ mutate: vi.fn() }) }, trackSocialClick: { useMutation: () => ({ mutate: vi.fn() }) } },
     },
   },
@@ -75,6 +77,15 @@ describe("portfolio route transitions", () => {
 
   it("completes the mobile journey Accueil → À propos → Détail projet", async () => {
     await runJourney(390);
+  });
+
+  it("affiche les contenus éditoriaux et les formations issus des requêtes publiques", async () => {
+    window.history.pushState({}, "", "/about");
+    render(<PortfolioRoutes />);
+    expect(screen.getByText("EDITED.")).toBeTruthy();
+    expect(screen.getByText("Licence")).toBeTruthy();
+    expect(screen.getByText("Université")).toBeTruthy();
+    expect(screen.getByText("2024")).toBeTruthy();
   });
 
   it("affiche les images d’attestation dans l’onglet Certifications", async () => {

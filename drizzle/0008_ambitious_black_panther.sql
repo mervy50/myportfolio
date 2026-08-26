@@ -1,0 +1,1 @@
+ALTER TABLE `portfolio_site_content` ADD `headerBrand` varchar(120) NOT NULL;

@@ -1,6 +1,6 @@
 import { asc, desc, eq, gte, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { contactMessages, InsertContactMessage, InsertPortfolioAnalyticsEvent, InsertPortfolioCertification, InsertPortfolioProfile, InsertPortfolioProject, InsertPortfolioSkill, InsertUser, portfolioAnalyticsEvents, portfolioCertifications, portfolioProfile, portfolioProjects, portfolioSkills, users } from "../drizzle/schema";
+import { contactMessages, InsertContactMessage, InsertPortfolioAnalyticsEvent, InsertPortfolioCertification, InsertPortfolioEducation, InsertPortfolioProfile, InsertPortfolioProject, InsertPortfolioSiteContent, InsertPortfolioSkill, InsertUser, portfolioAnalyticsEvents, portfolioCertifications, portfolioEducation, portfolioProfile, portfolioProjects, portfolioSiteContent, portfolioSkills, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 import { storagePut } from './storage';
 
@@ -208,6 +208,54 @@ export async function deletePortfolioProfile() {
   if (!db) throw new Error("Database unavailable");
   await db.delete(portfolioProfile).where(eq(portfolioProfile.id, 1));
   return { id: 1 };
+}
+
+export async function getPortfolioSiteContent() {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const rows = await db.select().from(portfolioSiteContent).where(eq(portfolioSiteContent.id, 1)).limit(1);
+  return rows[0];
+}
+
+export async function upsertPortfolioSiteContent(content: Omit<InsertPortfolioSiteContent, "id">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(portfolioSiteContent).values({ id: 1, ...content }).onDuplicateKeyUpdate({ set: content });
+  return { id: 1 };
+}
+
+export async function listPortfolioEducation() {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.select().from(portfolioEducation).orderBy(asc(portfolioEducation.displayOrder), desc(portfolioEducation.createdAt));
+}
+
+export async function createPortfolioEducation(education: InsertPortfolioEducation) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(portfolioEducation).values(education);
+  return { id: Number(result[0].insertId) };
+}
+
+export async function updatePortfolioEducation(id: number, education: Partial<InsertPortfolioEducation>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(portfolioEducation).set(education).where(eq(portfolioEducation.id, id));
+  return { id };
+}
+
+export async function deletePortfolioEducation(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(portfolioEducation).where(eq(portfolioEducation.id, id));
+  return { id };
+}
+
+export async function reorderPortfolioEducation(order: Array<{ id: number; displayOrder: number }>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await Promise.all(order.map(item => db.update(portfolioEducation).set({ displayOrder: item.displayOrder }).where(eq(portfolioEducation.id, item.id))));
+  return { updated: order.length };
 }
 
 export async function listPortfolioSkills() {

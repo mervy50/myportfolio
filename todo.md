@@ -110,3 +110,17 @@
 - [x] Vérifier le rendu responsive et enregistrer un checkpoint après validation.
 
 - [x] Enregistrer un nouveau checkpoint après l’import d’attestations, l’affichage public et le CTA « Découvrir les détails » validés.
+
+- [x] Inventorier page par page tous les contenus affichés sur le front et les éléments encore codés en dur.
+- [x] Définir les entités éditoriales manquantes pour administrer textes, liens, images et paramètres publics.
+- [x] Ajouter les tables et migrations nécessaires sans écraser les contenus existants.
+- [x] Ajouter les procédures tRPC publiques/admin et les validations associées.
+- [x] Étendre le panel admin pour gérer tous les contenus éditoriaux identifiés.
+- [x] Connecter le front aux contenus administrables et gérer les médias via le stockage sécurisé.
+- [x] Ajouter les tests de CRUD, permissions, rendu public et régressions.
+- [x] Vérifier desktop/mobile et enregistrer un checkpoint de livraison.
+
+- [x] Corriger la validation `educationInput.year` et ajouter des tests serveur pour années valides/invalides.
+- [ ] Rendre administrables les libellés encore codés en dur : onglets Portfolio, labels du formulaire Contact et microcopies publiques.
+- [x] Ajouter des tests dédiés pour `portfolio.content` et `portfolio.education` : lecture publique, CRUD admin, permissions et rendu public.
+- [ ] Enregistrer un checkpoint après la validation finale desktop/mobile de ce lot éditorial.

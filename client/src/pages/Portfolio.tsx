@@ -4,6 +4,7 @@ import { ArrowUpRight, Award, Code2, ExternalLink, FolderKanban, X } from "lucid
 import { Link } from "wouter";
 import { skills } from "@/lib/portfolio-data";
 import { trpc } from "@/lib/trpc";
+import { defaultSiteContent } from "@/lib/site-content";
 
 type ProjectRecord = { id: number; slug: string; title: string; type: string; year: string; description: string; stack: string[]; status: string };
 type CertificationRecord = { id: number; title: string; provider: string; year: string | null; description: string | null; attestationImageUrl: string | null };
@@ -15,6 +16,8 @@ export default function Portfolio() {
   const projectsQuery = trpc.portfolio.projects.list.useQuery();
   const certificationsQuery = trpc.portfolio.certifications.list.useQuery();
   const skillsQuery = trpc.portfolio.skills.list.useQuery();
+  const contentQuery = trpc.portfolio.content.get.useQuery();
+  const content = contentQuery.data ?? defaultSiteContent;
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -32,7 +35,7 @@ export default function Portfolio() {
   const certificationContent = certificationsQuery.isLoading ? <div className="data-state" role="status">Chargement des certifications…</div> : certificationsQuery.isError ? <div className="data-state is-error" role="alert">Impossible de charger les certifications pour le moment.</div> : certifications.length === 0 ? <div className="data-state" role="status">Aucune certification publiée pour le moment.</div> : <div className="cert-grid">{certifications.map((cert, index) => <article className="cert-card" key={cert.id}>{cert.attestationImageUrl ? <a className="cert-image-link" href={cert.attestationImageUrl} target="_blank" rel="noreferrer"><img className="cert-image" src={cert.attestationImageUrl} alt={`Attestation de ${cert.title}`} /><span>Voir l’attestation <ExternalLink size={12} /></span></a> : <div className="cert-image-empty" aria-hidden="true"><Award size={25} /></div>}<div className="cert-top"><Award size={19} /><span className="aqua-text">{String(index + 1).padStart(2, "0")}</span></div><h2>{cert.title}</h2><p>{cert.provider}{cert.year ? ` · ${cert.year}` : ""}</p>{cert.description && <small className="cert-description">{cert.description}</small>}</article>)}</div>;
 
   return <main className="inner-page portfolio-page">
-    <div className="page-title-centered"><p className="kicker">02 / Portfolio</p><h1>Portfolio<br /><span>Showcase</span></h1><p>Découvrez mes projets, mes formations et les technologies que j’utilise pour construire des solutions numériques.</p></div>
+    <div className="page-title-centered"><p className="kicker">02 / Portfolio</p><h1>{content.portfolioTitleLine1}<br /><span>{content.portfolioTitleLine2}</span></h1><p>{content.portfolioDescription}</p></div>
     <div className="showcase-tabs" role="tablist">{(["Projets", "Certifications", "Tech Stack"] as Tab[]).map(item => <button className={tab === item ? "tab active" : "tab"} key={item} onClick={() => setTab(item)} role="tab" aria-selected={tab === item}>{item}</button>)}</div>
     {tab === "Projets" && projectContent}
     {tab === "Certifications" && certificationContent}
