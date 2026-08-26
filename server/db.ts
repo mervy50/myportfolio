@@ -96,6 +96,26 @@ export async function createContactMessage(message: InsertContactMessage) {
   return { id: Number(result[0].insertId) };
 }
 
+export async function listContactMessages() {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function updateContactMessageRead(id: number, isRead: boolean) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(contactMessages).set({ isRead }).where(eq(contactMessages.id, id));
+  return { id, isRead };
+}
+
+export async function deleteContactMessage(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(contactMessages).where(eq(contactMessages.id, id));
+  return { id };
+}
+
 export async function listPortfolioProjects() {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
@@ -226,27 +246,33 @@ export async function getPortfolioAnalyticsStats() {
   const [totals] = await db.select({
     visits: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'visit' then 1 else 0 end), 0)`,
     cvDownloads: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'cv_download' then 1 else 0 end), 0)`,
+    githubClicks: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'github_click' then 1 else 0 end), 0)`,
+    linkedinClicks: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'linkedin_click' then 1 else 0 end), 0)`,
   }).from(portfolioAnalyticsEvents);
   const [recentTotals] = await db.select({
     visits: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'visit' then 1 else 0 end), 0)`,
     cvDownloads: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'cv_download' then 1 else 0 end), 0)`,
+    githubClicks: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'github_click' then 1 else 0 end), 0)`,
+    linkedinClicks: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'linkedin_click' then 1 else 0 end), 0)`,
   }).from(portfolioAnalyticsEvents).where(gte(portfolioAnalyticsEvents.createdAt, cutoff));
   const events = await db.select({ eventType: portfolioAnalyticsEvents.eventType, createdAt: portfolioAnalyticsEvents.createdAt }).from(portfolioAnalyticsEvents).where(gte(portfolioAnalyticsEvents.createdAt, cutoff)).orderBy(asc(portfolioAnalyticsEvents.createdAt));
-  const daily = new Map<string, { visits: number; cvDownloads: number }>();
+  const daily = new Map<string, { visits: number; cvDownloads: number; githubClicks: number; linkedinClicks: number }>();
   for (let offset = 29; offset >= 0; offset -= 1) {
     const date = new Date(Date.now() - offset * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-    daily.set(date, { visits: 0, cvDownloads: 0 });
+    daily.set(date, { visits: 0, cvDownloads: 0, githubClicks: 0, linkedinClicks: 0 });
   }
   for (const event of events) {
     const date = new Date(event.createdAt).toISOString().slice(0, 10);
     const bucket = daily.get(date);
     if (!bucket) continue;
     if (event.eventType === "visit") bucket.visits += 1;
-    else bucket.cvDownloads += 1;
+    else if (event.eventType === "cv_download") bucket.cvDownloads += 1;
+    else if (event.eventType === "github_click") bucket.githubClicks += 1;
+    else if (event.eventType === "linkedin_click") bucket.linkedinClicks += 1;
   }
   return {
-    totals: { visits: Number(totals?.visits ?? 0), cvDownloads: Number(totals?.cvDownloads ?? 0) },
-    recent: { visits: Number(recentTotals?.visits ?? 0), cvDownloads: Number(recentTotals?.cvDownloads ?? 0) },
+    totals: { visits: Number(totals?.visits ?? 0), cvDownloads: Number(totals?.cvDownloads ?? 0), githubClicks: Number(totals?.githubClicks ?? 0), linkedinClicks: Number(totals?.linkedinClicks ?? 0) },
+    recent: { visits: Number(recentTotals?.visits ?? 0), cvDownloads: Number(recentTotals?.cvDownloads ?? 0), githubClicks: Number(recentTotals?.githubClicks ?? 0), linkedinClicks: Number(recentTotals?.linkedinClicks ?? 0) },
     daily: Array.from(daily, ([date, values]) => ({ date, ...values })),
   };
 }

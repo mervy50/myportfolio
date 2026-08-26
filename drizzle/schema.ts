@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -30,6 +30,7 @@ export const contactMessages = mysqlTable("contact_messages", {
   name: varchar("name", { length: 160 }).notNull(),
   email: varchar("email", { length: 320 }).notNull(),
   message: text("message").notNull(),
+  isRead: boolean("isRead").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -97,7 +98,7 @@ export type InsertPortfolioSkill = typeof portfolioSkills.$inferInsert;
 
 export const portfolioAnalyticsEvents = mysqlTable("portfolio_analytics_events", {
   id: int("id").autoincrement().primaryKey(),
-  eventType: mysqlEnum("eventType", ["visit", "cv_download"]).notNull(),
+  eventType: mysqlEnum("eventType", ["visit", "cv_download", "github_click", "linkedin_click"]).notNull(),
   sessionId: varchar("sessionId", { length: 128 }).notNull(),
   path: varchar("path", { length: 200 }).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

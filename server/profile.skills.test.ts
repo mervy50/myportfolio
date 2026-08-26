@@ -2,6 +2,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   createContactMessage: vi.fn(),
+  listContactMessages: vi.fn(),
+  updateContactMessageRead: vi.fn(),
+  deleteContactMessage: vi.fn(),
   createPortfolioAnalyticsEvent: vi.fn(),
   getPortfolioAnalyticsStats: vi.fn(),
   createPortfolioCertification: vi.fn(),
@@ -69,13 +72,33 @@ describe("profile, skills and project ordering", () => {
 
   it("enregistre les événements publics et réserve les statistiques à l’admin", async () => {
     mocks.createPortfolioAnalyticsEvent.mockResolvedValue({ id: 12 });
-    mocks.getPortfolioAnalyticsStats.mockResolvedValue({ totals: { visits: 4, cvDownloads: 2 }, recent: { visits: 3, cvDownloads: 1 }, daily: [] });
+    mocks.getPortfolioAnalyticsStats.mockResolvedValue({ totals: { visits: 4, cvDownloads: 2, githubClicks: 6, linkedinClicks: 3 }, recent: { visits: 3, cvDownloads: 1, githubClicks: 4, linkedinClicks: 2 }, daily: [] });
     const publicCaller = appRouter.createCaller(context("user"));
     await expect(publicCaller.portfolio.analytics.trackVisit({ sessionId: "session-1234567890", path: "/about" })).resolves.toEqual({ id: 12 });
     await expect(publicCaller.portfolio.analytics.trackCvDownload({ sessionId: "session-1234567890", path: "/" })).resolves.toEqual({ id: 12 });
+    await expect(publicCaller.portfolio.analytics.trackSocialClick({ sessionId: "session-1234567890", path: "/contact", platform: "github" })).resolves.toEqual({ id: 12 });
+    await expect(publicCaller.portfolio.analytics.trackSocialClick({ sessionId: "session-1234567890", path: "/contact", platform: "linkedin" })).resolves.toEqual({ id: 12 });
     await expect(publicCaller.portfolio.analytics.stats()).rejects.toThrow();
-    await expect(appRouter.createCaller(context()).portfolio.analytics.stats()).resolves.toEqual({ totals: { visits: 4, cvDownloads: 2 }, recent: { visits: 3, cvDownloads: 1 }, daily: [] });
+    await expect(appRouter.createCaller(context()).portfolio.analytics.stats()).resolves.toEqual({ totals: { visits: 4, cvDownloads: 2, githubClicks: 6, linkedinClicks: 3 }, recent: { visits: 3, cvDownloads: 1, githubClicks: 4, linkedinClicks: 2 }, daily: [] });
     expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(1, { eventType: "visit", sessionId: "session-1234567890", path: "/about" });
     expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(2, { eventType: "cv_download", sessionId: "session-1234567890", path: "/" });
+    expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(3, { eventType: "github_click", sessionId: "session-1234567890", path: "/contact" });
+    expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(4, { eventType: "linkedin_click", sessionId: "session-1234567890", path: "/contact" });
+  });
+
+  it("consulte et gère la boîte de réception uniquement pour un administrateur", async () => {
+    const message = { id: 5, name: "Visiteur", email: "visiteur@example.com", message: "Bonjour, je souhaite échanger sur un projet.", isRead: false, createdAt: new Date() };
+    mocks.listContactMessages.mockResolvedValue([message]);
+    mocks.updateContactMessageRead.mockResolvedValue({ id: 5, isRead: true });
+    mocks.deleteContactMessage.mockResolvedValue({ id: 5 });
+    const adminCaller = appRouter.createCaller(context());
+    const userCaller = appRouter.createCaller(context("user"));
+    await expect(adminCaller.contact.inbox.list()).resolves.toEqual([message]);
+    await expect(adminCaller.contact.inbox.markRead({ id: 5, isRead: true })).resolves.toEqual({ id: 5, isRead: true });
+    await expect(adminCaller.contact.inbox.delete({ id: 5 })).resolves.toEqual({ id: 5 });
+    await expect(userCaller.contact.inbox.list()).rejects.toThrow();
+    await expect(userCaller.contact.inbox.markRead({ id: 5, isRead: true })).rejects.toThrow();
+    expect(mocks.updateContactMessageRead).toHaveBeenCalledWith(5, true);
+    expect(mocks.deleteContactMessage).toHaveBeenCalledWith(5);
   });
 });

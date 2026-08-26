@@ -2,6 +2,9 @@ import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import {
   createContactMessage,
+  deleteContactMessage,
+  listContactMessages,
+  updateContactMessageRead,
   createPortfolioCertification,
   createPortfolioAnalyticsEvent,
   getPortfolioAnalyticsStats,
@@ -62,6 +65,7 @@ const skillInput = z.object({
 });
 const reorderInput = z.object({ order: z.array(z.object({ id: z.number().int().positive(), displayOrder: z.number().int().min(0) })).min(1).max(100) });
 const analyticsEventInput = z.object({ sessionId: z.string().trim().min(16).max(128), path: z.string().trim().min(1).max(200) });
+const socialClickInput = analyticsEventInput.extend({ platform: z.enum(["github", "linkedin"]) });
 
 const certificationInput = z.object({
   title: z.string().trim().min(2).max(200),
@@ -115,6 +119,7 @@ export const appRouter = router({
     analytics: router({
       trackVisit: publicProcedure.input(analyticsEventInput).mutation(async ({ input }) => createPortfolioAnalyticsEvent({ eventType: "visit", sessionId: input.sessionId, path: input.path })),
       trackCvDownload: publicProcedure.input(analyticsEventInput).mutation(async ({ input }) => createPortfolioAnalyticsEvent({ eventType: "cv_download", sessionId: input.sessionId, path: input.path })),
+      trackSocialClick: publicProcedure.input(socialClickInput).mutation(async ({ input }) => createPortfolioAnalyticsEvent({ eventType: input.platform === "github" ? "github_click" : "linkedin_click", sessionId: input.sessionId, path: input.path })),
       stats: adminProcedure.query(getPortfolioAnalyticsStats),
     }),
     certifications: router({
@@ -137,6 +142,11 @@ export const appRouter = router({
         });
         return { success: true as const, id: result.id };
       }),
+    inbox: router({
+      list: adminProcedure.query(listContactMessages),
+      markRead: adminProcedure.input(idInput.extend({ isRead: z.boolean() })).mutation(async ({ input }) => updateContactMessageRead(input.id, input.isRead)),
+      delete: adminProcedure.input(idInput).mutation(async ({ input }) => deleteContactMessage(input.id)),
+    }),
   }),
 });
 

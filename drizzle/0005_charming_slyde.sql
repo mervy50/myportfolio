@@ -1,0 +1,2 @@
+ALTER TABLE `portfolio_analytics_events` MODIFY COLUMN `eventType` enum('visit','cv_download','github_click','linkedin_click') NOT NULL;--> statement-breakpoint
+ALTER TABLE `contact_messages` ADD `isRead` boolean DEFAULT false NOT NULL;

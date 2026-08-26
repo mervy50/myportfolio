@@ -86,3 +86,12 @@
 
 - [x] Diagnostiquer la page d’erreur affichée après la connexion Google au callback OAuth.
 - [x] Corriger le flux OAuth selon l’erreur observée et revalider le retour vers `/admin`.
+
+- [x] Ajouter un statut de lecture aux messages de contact et les procédures admin associées.
+- [x] Construire une boîte de réception admin pour consulter, marquer comme lu et supprimer les messages.
+- [x] Ajouter les événements de clic GitHub et LinkedIn au suivi statistique.
+- [x] Étendre les agrégats et le tableau de bord aux clics sociaux.
+- [x] Ajouter les tests CRUD/permissions de la boîte de réception et du suivi social.
+- [x] Vérifier le rendu admin et sauvegarder un checkpoint après validation.
+
+- [x] Enregistrer un nouveau checkpoint après la boîte de réception admin et le suivi GitHub/LinkedIn validés.

@@ -18,6 +18,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   const profileQuery = trpc.portfolio.profile.get.useQuery();
   const profile = profileQuery.data;
   const visitTracker = trpc.portfolio.analytics.trackVisit.useMutation();
+  const socialClickTracker = trpc.portfolio.analytics.trackSocialClick.useMutation();
   useEffect(() => {
     if (location === "/admin") return;
     try {
@@ -28,6 +29,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     }
     visitTracker.mutate({ sessionId: getAnalyticsSessionId(), path: location });
   }, [location]);
+  const trackSocialClick = (platform: "github" | "linkedin") => { socialClickTracker.mutate({ sessionId: getAnalyticsSessionId(), path: location, platform }); };
   const handleNavigation = (href: string) => {
     setMenuOpen(false);
     if (location !== href) navigate(href);
@@ -57,7 +59,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <footer className="site-footer">
         <Link href="/" className="footer-brand">MERVYLKD<span>.</span></Link>
         <span className="footer-copy">Conçu & développé avec soin · 2024</span><Link href="/admin" className="footer-admin">Admin</Link>
-        <div className="footer-links">{profile?.github && <a href={profile.github} aria-label="GitHub"><Github size={16} /></a>}{profile?.linkedin && <a href={profile.linkedin} aria-label="LinkedIn"><Linkedin size={16} /></a>}{profile?.email && <a href={`mailto:${profile.email}`} aria-label="Email"><Mail size={16} /></a>}</div>
+        <div className="footer-links">{profile?.github && <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" onClick={() => trackSocialClick("github")}><Github size={16} /></a>}{profile?.linkedin && <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" onClick={() => trackSocialClick("linkedin")}><Linkedin size={16} /></a>}{profile?.email && <a href={`mailto:${profile.email}`} aria-label="Email"><Mail size={16} /></a>}</div>
       </footer>
     </div>
   );
