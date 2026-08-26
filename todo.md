@@ -145,3 +145,7 @@
 - [x] Retirer le domaine fictif de la balise canonical et documenter le réglage à effectuer après choix de l’hébergement.
 - [x] Valider tests et build après neutralisation de la canonical.
 - [x] Comparer les options d’hébergement gratuit compatibles avec ce portfolio full-stack.
+
+- [ ] Préparer l’état Git et vérifier qu’aucun secret ou fichier sensible ne sera poussé.
+- [ ] Pousser la version actuelle vers `mervy50/myportfolio`.
+- [ ] Vérifier le commit et la branche distants, puis documenter le lancement local.
