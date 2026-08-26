@@ -146,6 +146,6 @@
 - [x] Valider tests et build après neutralisation de la canonical.
 - [x] Comparer les options d’hébergement gratuit compatibles avec ce portfolio full-stack.
 
-- [ ] Préparer l’état Git et vérifier qu’aucun secret ou fichier sensible ne sera poussé.
-- [ ] Pousser la version actuelle vers `mervy50/myportfolio`.
-- [ ] Vérifier le commit et la branche distants, puis documenter le lancement local.
+- [x] Préparer l’état Git et vérifier qu’aucun secret ou fichier sensible ne sera poussé.
+- [x] Pousser la version actuelle vers `mervy50/myportfolio`.
+- [x] Vérifier le commit et la branche distants, puis documenter le lancement local.
