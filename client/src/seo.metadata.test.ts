@@ -9,7 +9,7 @@ describe("SEO metadata", () => {
     expect(html).toContain('<html lang="fr">');
     expect(html).toContain('name="description"');
     expect(html).toContain('name="robots" content="index, follow');
-    expect(html).toContain('rel="canonical" href="https://mervylokodade.com/"');
+    expect(html).not.toContain('rel="canonical"');
     expect(html).toContain('type="application/ld+json"');
   });
 

@@ -141,3 +141,7 @@
 - [x] Régénérer l’image Open Graph au format paysage 16:9 et aligner ses dimensions déclarées.
 - [x] Effectuer une vérification visuelle desktop/mobile après le lot SEO.
 - [x] Enregistrer un nouveau checkpoint après validation complète du lot SEO.
+
+- [x] Retirer le domaine fictif de la balise canonical et documenter le réglage à effectuer après choix de l’hébergement.
+- [x] Valider tests et build après neutralisation de la canonical.
+- [x] Comparer les options d’hébergement gratuit compatibles avec ce portfolio full-stack.
