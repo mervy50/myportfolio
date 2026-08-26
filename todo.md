@@ -131,3 +131,13 @@
 
 - [x] Ajouter un champ éditorial pour le placeholder du message Contact et le brancher dans l’admin et le front.
 - [x] Compléter les tests UI explicites des libellés éditoriaux Home et Contact.
+
+- [x] Auditer les métadonnées HTML, le favicon et les assets de partage social existants.
+- [x] Ajouter les balises SEO de base, Open Graph, Twitter Cards, canonical et données structurées.
+- [x] Générer et intégrer un favicon aqua/noir et une image de partage social cohérente avec la charte.
+- [x] Ajouter les tests de présence des métadonnées et vérifier le build responsive.
+- [x] Enregistrer un checkpoint après validation SEO et livrer la version mise à jour.
+
+- [x] Régénérer l’image Open Graph au format paysage 16:9 et aligner ses dimensions déclarées.
+- [x] Effectuer une vérification visuelle desktop/mobile après le lot SEO.
+- [x] Enregistrer un nouveau checkpoint après validation complète du lot SEO.

@@ -1,0 +1,10 @@
+{
+  "name": "Portfolio de Merveille Elise LOKO-DADE",
+  "short_name": "Merveille LOKO-DADE",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080A0C",
+  "theme_color": "#080A0C",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
