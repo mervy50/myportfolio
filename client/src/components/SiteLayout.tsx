@@ -1,8 +1,9 @@
 /* Charte aqua/noir : interface tech sombre, navigation compacte, cartes graphite et aqua signal réservé aux actions. */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import { getAnalyticsSessionId } from "@/lib/analytics";
 
 const links = [
   { href: "/", label: "Accueil" },
@@ -16,6 +17,17 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   const [location, navigate] = useLocation();
   const profileQuery = trpc.portfolio.profile.get.useQuery();
   const profile = profileQuery.data;
+  const visitTracker = trpc.portfolio.analytics.trackVisit.useMutation();
+  useEffect(() => {
+    if (location === "/admin") return;
+    try {
+      if (sessionStorage.getItem("portfolio-analytics-visit-sent")) return;
+      sessionStorage.setItem("portfolio-analytics-visit-sent", "1");
+    } catch {
+      // If storage is unavailable, the event is still sent for this render.
+    }
+    visitTracker.mutate({ sessionId: getAnalyticsSessionId(), path: location });
+  }, [location]);
   const handleNavigation = (href: string) => {
     setMenuOpen(false);
     if (location !== href) navigate(href);

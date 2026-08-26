@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  createPortfolioAnalyticsEvent: vi.fn(),
+  getPortfolioAnalyticsStats: vi.fn(),
   createPortfolioCertification: vi.fn(),
   getPortfolioProfile: vi.fn(),
   deletePortfolioProfile: vi.fn(),

@@ -42,7 +42,9 @@ export function getSessionCookieOptions(
   return {
     httpOnly: true,
     path: "/",
-    sameSite: "none",
+    // OAuth returns from another top-level origin. Lax still permits that
+    // redirect while remaining compatible when the proxy terminates TLS.
+    sameSite: "lax",
     secure: isSecureRequest(req),
   };
 }

@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   createContactMessage: vi.fn(),
+  createPortfolioAnalyticsEvent: vi.fn(),
+  getPortfolioAnalyticsStats: vi.fn(),
   createPortfolioCertification: vi.fn(),
   createPortfolioProject: vi.fn(),
   createPortfolioSkill: vi.fn(),
@@ -24,6 +26,8 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("./db", () => ({
   createContactMessage: mocks.createContactMessage,
+  createPortfolioAnalyticsEvent: mocks.createPortfolioAnalyticsEvent,
+  getPortfolioAnalyticsStats: mocks.getPortfolioAnalyticsStats,
   createPortfolioCertification: mocks.createPortfolioCertification,
   createPortfolioProject: mocks.createPortfolioProject,
   createPortfolioSkill: mocks.createPortfolioSkill,

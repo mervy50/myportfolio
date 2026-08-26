@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   createContactMessage: vi.fn(),
+  createPortfolioAnalyticsEvent: vi.fn(),
+  getPortfolioAnalyticsStats: vi.fn(),
   createPortfolioCertification: vi.fn(),
   createPortfolioProject: vi.fn(),
   createPortfolioSkill: vi.fn(),
@@ -63,5 +65,17 @@ describe("profile, skills and project ordering", () => {
     const userCaller = appRouter.createCaller(context("user"));
     await expect(userCaller.portfolio.projects.reorder({ order: [{ id: 1, displayOrder: 0 }] })).rejects.toThrow();
     expect(mocks.reorderPortfolioProjects).toHaveBeenCalledTimes(1);
+  });
+
+  it("enregistre les événements publics et réserve les statistiques à l’admin", async () => {
+    mocks.createPortfolioAnalyticsEvent.mockResolvedValue({ id: 12 });
+    mocks.getPortfolioAnalyticsStats.mockResolvedValue({ totals: { visits: 4, cvDownloads: 2 }, recent: { visits: 3, cvDownloads: 1 }, daily: [] });
+    const publicCaller = appRouter.createCaller(context("user"));
+    await expect(publicCaller.portfolio.analytics.trackVisit({ sessionId: "session-1234567890", path: "/about" })).resolves.toEqual({ id: 12 });
+    await expect(publicCaller.portfolio.analytics.trackCvDownload({ sessionId: "session-1234567890", path: "/" })).resolves.toEqual({ id: 12 });
+    await expect(publicCaller.portfolio.analytics.stats()).rejects.toThrow();
+    await expect(appRouter.createCaller(context()).portfolio.analytics.stats()).resolves.toEqual({ totals: { visits: 4, cvDownloads: 2 }, recent: { visits: 3, cvDownloads: 1 }, daily: [] });
+    expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(1, { eventType: "visit", sessionId: "session-1234567890", path: "/about" });
+    expect(mocks.createPortfolioAnalyticsEvent).toHaveBeenNthCalledWith(2, { eventType: "cv_download", sessionId: "session-1234567890", path: "/" });
   });
 });

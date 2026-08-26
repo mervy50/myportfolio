@@ -14,6 +14,7 @@ vi.mock("@/lib/trpc", () => ({
       certifications: { list: { useQuery: () => ({ data: undefined }) } },
       profile: { get: { useQuery: () => ({ data: undefined }) } },
       skills: { list: { useQuery: () => ({ data: [{ id: 1, groupName: "Frontend", name: "React.js", displayOrder: 0 }] }) } },
+      analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) }, trackCvDownload: { useMutation: () => ({ mutate: vi.fn() }) } },
     },
   },
 }));

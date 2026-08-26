@@ -6,7 +6,7 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/lib/trpc", () => ({ trpc: { portfolio: { profile: { get: { useQuery: () => ({ data: { email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example" } }) } } } } }));
+vi.mock("@/lib/trpc", () => ({ trpc: { portfolio: { profile: { get: { useQuery: () => ({ data: { email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example" } }) } }, analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) } } } } }));
 import SiteLayout from "./SiteLayout";
 
 function renderLayout() {

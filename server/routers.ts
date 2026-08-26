@@ -3,6 +3,8 @@ import { COOKIE_NAME } from "@shared/const";
 import {
   createContactMessage,
   createPortfolioCertification,
+  createPortfolioAnalyticsEvent,
+  getPortfolioAnalyticsStats,
   createPortfolioProject,
   deletePortfolioCertification,
   deletePortfolioProject,
@@ -59,6 +61,7 @@ const skillInput = z.object({
   displayOrder: z.number().int().min(0).default(0),
 });
 const reorderInput = z.object({ order: z.array(z.object({ id: z.number().int().positive(), displayOrder: z.number().int().min(0) })).min(1).max(100) });
+const analyticsEventInput = z.object({ sessionId: z.string().trim().min(16).max(128), path: z.string().trim().min(1).max(200) });
 
 const certificationInput = z.object({
   title: z.string().trim().min(2).max(200),
@@ -108,6 +111,11 @@ export const appRouter = router({
       update: adminProcedure.input(idInput.extend({ data: projectInput.partial() })).mutation(async ({ input }) => updatePortfolioProject(input.id, input.data)),
       delete: adminProcedure.input(idInput).mutation(async ({ input }) => deletePortfolioProject(input.id)),
       reorder: adminProcedure.input(reorderInput).mutation(async ({ input }) => reorderPortfolioProjects(input.order)),
+    }),
+    analytics: router({
+      trackVisit: publicProcedure.input(analyticsEventInput).mutation(async ({ input }) => createPortfolioAnalyticsEvent({ eventType: "visit", sessionId: input.sessionId, path: input.path })),
+      trackCvDownload: publicProcedure.input(analyticsEventInput).mutation(async ({ input }) => createPortfolioAnalyticsEvent({ eventType: "cv_download", sessionId: input.sessionId, path: input.path })),
+      stats: adminProcedure.query(getPortfolioAnalyticsStats),
     }),
     certifications: router({
       list: publicProcedure.query(listPortfolioCertifications),

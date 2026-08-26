@@ -94,3 +94,14 @@ export const portfolioSkills = mysqlTable("portfolio_skills", {
 
 export type PortfolioSkill = typeof portfolioSkills.$inferSelect;
 export type InsertPortfolioSkill = typeof portfolioSkills.$inferInsert;
+
+export const portfolioAnalyticsEvents = mysqlTable("portfolio_analytics_events", {
+  id: int("id").autoincrement().primaryKey(),
+  eventType: mysqlEnum("eventType", ["visit", "cv_download"]).notNull(),
+  sessionId: varchar("sessionId", { length: 128 }).notNull(),
+  path: varchar("path", { length: 200 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PortfolioAnalyticsEvent = typeof portfolioAnalyticsEvents.$inferSelect;
+export type InsertPortfolioAnalyticsEvent = typeof portfolioAnalyticsEvents.$inferInsert;

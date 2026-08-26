@@ -1,6 +1,6 @@
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq, gte, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { contactMessages, InsertContactMessage, InsertPortfolioCertification, InsertPortfolioProfile, InsertPortfolioProject, InsertPortfolioSkill, InsertUser, portfolioCertifications, portfolioProfile, portfolioProjects, portfolioSkills, users } from "../drizzle/schema";
+import { contactMessages, InsertContactMessage, InsertPortfolioAnalyticsEvent, InsertPortfolioCertification, InsertPortfolioProfile, InsertPortfolioProject, InsertPortfolioSkill, InsertUser, portfolioAnalyticsEvents, portfolioCertifications, portfolioProfile, portfolioProjects, portfolioSkills, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -210,4 +210,43 @@ export async function reorderPortfolioProjects(order: Array<{ id: number; displa
   if (!db) throw new Error("Database unavailable");
   await Promise.all(order.map(item => db.update(portfolioProjects).set({ displayOrder: item.displayOrder }).where(eq(portfolioProjects.id, item.id))));
   return { updated: order.length };
+}
+
+export async function createPortfolioAnalyticsEvent(event: InsertPortfolioAnalyticsEvent) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(portfolioAnalyticsEvents).values(event);
+  return { id: Number(result[0].insertId) };
+}
+
+export async function getPortfolioAnalyticsStats() {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const [totals] = await db.select({
+    visits: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'visit' then 1 else 0 end), 0)`,
+    cvDownloads: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'cv_download' then 1 else 0 end), 0)`,
+  }).from(portfolioAnalyticsEvents);
+  const [recentTotals] = await db.select({
+    visits: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'visit' then 1 else 0 end), 0)`,
+    cvDownloads: sql<number>`coalesce(sum(case when ${portfolioAnalyticsEvents.eventType} = 'cv_download' then 1 else 0 end), 0)`,
+  }).from(portfolioAnalyticsEvents).where(gte(portfolioAnalyticsEvents.createdAt, cutoff));
+  const events = await db.select({ eventType: portfolioAnalyticsEvents.eventType, createdAt: portfolioAnalyticsEvents.createdAt }).from(portfolioAnalyticsEvents).where(gte(portfolioAnalyticsEvents.createdAt, cutoff)).orderBy(asc(portfolioAnalyticsEvents.createdAt));
+  const daily = new Map<string, { visits: number; cvDownloads: number }>();
+  for (let offset = 29; offset >= 0; offset -= 1) {
+    const date = new Date(Date.now() - offset * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    daily.set(date, { visits: 0, cvDownloads: 0 });
+  }
+  for (const event of events) {
+    const date = new Date(event.createdAt).toISOString().slice(0, 10);
+    const bucket = daily.get(date);
+    if (!bucket) continue;
+    if (event.eventType === "visit") bucket.visits += 1;
+    else bucket.cvDownloads += 1;
+  }
+  return {
+    totals: { visits: Number(totals?.visits ?? 0), cvDownloads: Number(totals?.cvDownloads ?? 0) },
+    recent: { visits: Number(recentTotals?.visits ?? 0), cvDownloads: Number(recentTotals?.cvDownloads ?? 0) },
+    daily: Array.from(daily, ([date, values]) => ({ date, ...values })),
+  };
 }

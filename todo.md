@@ -71,3 +71,18 @@
 - [x] Connecter l’accueil, À propos et Tech Stack aux données dynamiques du profil et des compétences.
 - [x] Ajouter les tests de permissions, CRUD profil/compétences et réordonnancement des projets.
 - [x] Intégrer le panel admin au DashboardLayout partagé et vérifier le build de production.
+
+- [x] Diagnostiquer et corriger la connexion au panel `/admin`.
+- [x] Ajouter la collecte des visites publiques et des téléchargements du CV.
+- [x] Ajouter une procédure admin de statistiques avec agrégats récents et totaux.
+- [x] Construire le tableau de bord statistique léger dans `/admin`.
+- [x] Ajouter les tests d’authentification, de permissions et de métriques.
+- [x] Vérifier visuellement le panel admin et sauvegarder un checkpoint de livraison.
+
+- [x] Vérifier le callback OAuth de bout en bout, le cookie de session, le rôle admin et le retour vers `/admin`.
+- [x] Séparer les totaux historiques des agrégats des 30 derniers jours dans les statistiques.
+- [x] Ajouter des tests ciblés pour le retour OAuth et les options de cookie de session.
+- [x] Vérifier visuellement le dashboard admin authentifié avec les statistiques affichées.
+
+- [x] Diagnostiquer la page d’erreur affichée après la connexion Google au callback OAuth.
+- [x] Corriger le flux OAuth selon l’erreur observée et revalider le retour vers `/admin`.
