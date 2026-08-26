@@ -12,7 +12,7 @@ vi.mock("@/lib/trpc", () => ({
         bySlug: { useQuery: () => ({ data: { id: 1, slug: "pitchlab", title: "Pitchlab", type: "Plateforme web", year: "2024", description: "Une description de projet suffisamment longue pour le test.", stack: ["Laravel", "PHP"], status: "Projet sélectionné" } }) },
       },
       certifications: { list: { useQuery: () => ({ data: undefined }) } },
-      profile: { get: { useQuery: () => ({ data: undefined }) } },
+      profile: { get: { useQuery: () => ({ data: { id: 1, name: "Merveille Elise LOKO-DADE", role: "Full-Stack Developer", bio: "Une présentation suffisamment longue pour le test.", email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example", photoUrl: null, aboutPhotoUrl: null, cvUrl: "/cv.pdf" } }) } },
       skills: { list: { useQuery: () => ({ data: [{ id: 1, groupName: "Frontend", name: "React.js", displayOrder: 0 }] }) } },
       analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) }, trackCvDownload: { useMutation: () => ({ mutate: vi.fn() }) }, trackSocialClick: { useMutation: () => ({ mutate: vi.fn() }) } },
     },
@@ -47,8 +47,10 @@ async function runJourney(viewport: number) {
   const user = userEvent.setup();
   render(<PortfolioRoutes />);
 
+  expect(screen.queryByRole("link", { name: /Télécharger mon CV/ })).toBeNull();
   await navigateFromMenu(user, "/about");
   expect(screen.getByRole("heading", { name: /Une développeuse/ })).toBeTruthy();
+  expect(screen.getByRole("link", { name: /Télécharger mon CV/ }).getAttribute("href")).toBe("/cv.pdf");
 
   await navigateFromMenu(user, "/portfolio");
   expect(screen.getByRole("heading", { name: /Portfolio/ })).toBeTruthy();

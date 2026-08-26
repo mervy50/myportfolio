@@ -95,3 +95,9 @@
 - [x] Vérifier le rendu admin et sauvegarder un checkpoint après validation.
 
 - [x] Enregistrer un nouveau checkpoint après la boîte de réception admin et le suivi GitHub/LinkedIn validés.
+
+- [x] Déplacer le bouton de téléchargement du CV de l’accueil vers la page À propos.
+- [x] Conserver le suivi statistique et vérifier le téléchargement depuis À propos.
+- [x] Vérifier le rendu responsive et enregistrer un checkpoint après la modification.
+
+- [x] Enregistrer un checkpoint après le déplacement du bouton CV vers la page À propos, une fois la validation responsive terminée.
