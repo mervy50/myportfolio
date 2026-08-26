@@ -18,6 +18,7 @@ export default function Portfolio() {
   const skillsQuery = trpc.portfolio.skills.list.useQuery();
   const contentQuery = trpc.portfolio.content.get.useQuery();
   const content = contentQuery.data ?? defaultSiteContent;
+  const tabs: Array<{ id: Tab; label: string }> = [{ id: "Projets", label: content.portfolioProjectsLabel }, { id: "Certifications", label: content.portfolioCertificationsLabel }, { id: "Tech Stack", label: content.portfolioTechStackLabel }];
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function Portfolio() {
 
   return <main className="inner-page portfolio-page">
     <div className="page-title-centered"><p className="kicker">02 / Portfolio</p><h1>{content.portfolioTitleLine1}<br /><span>{content.portfolioTitleLine2}</span></h1><p>{content.portfolioDescription}</p></div>
-    <div className="showcase-tabs" role="tablist">{(["Projets", "Certifications", "Tech Stack"] as Tab[]).map(item => <button className={tab === item ? "tab active" : "tab"} key={item} onClick={() => setTab(item)} role="tab" aria-selected={tab === item}>{item}</button>)}</div>
+    <div className="showcase-tabs" role="tablist">{tabs.map(item => <button className={tab === item.id ? "tab active" : "tab"} key={item.id} onClick={() => setTab(item.id)} role="tab" aria-selected={tab === item.id}>{item.label}</button>)}</div>
     {tab === "Projets" && projectContent}
     {tab === "Certifications" && certificationContent}
     {tab === "Tech Stack" && (skillsQuery.isLoading ? <div className="data-state" role="status">Chargement des compétences…</div> : skillsQuery.isError ? <div className="data-state is-error" role="alert">Impossible de charger les compétences pour le moment.</div> : skillGroups.length === 0 ? <div className="data-state" role="status">Aucune compétence publiée pour le moment.</div> : <div className="stack-grid">{skillGroups.map(([group, items]) => <section className="stack-card" key={group}><div className="stack-card-title"><Code2 size={18} /><h2>{group}</h2></div>{items.map(item => <div className="stack-row" key={item}><span className="stack-bullet" />{item}<ExternalLink size={13} /></div>)}</section>)}</div>)}

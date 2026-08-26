@@ -19,7 +19,7 @@ import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
 const content = {
-  headerBrand: "LOKO-DADE.", homeAvailability: "Disponible", homeTitleLine1: "Full-Stack", homeTitleLine2: "Developer.",
+  headerBrand: "LOKO-DADE.", portfolioProjectsLabel: "Projets", portfolioCertificationsLabel: "Certifications", portfolioTechStackLabel: "Tech Stack", contactFormTitle: "Envoyer un message", contactNameLabel: "Votre nom", contactEmailLabel: "Votre adresse e-mail", contactMessageLabel: "Votre message", contactMessagePlaceholder: "Décrivez votre projet", contactSubmitLabel: "Envoyer", homeProjectsLabel: "Projets réalisés", homeTechnologiesLabel: "Technologies", homeCuriosityLabel: "Curiosité", homeProjectsCta: "Voir mes projets", homeAboutCtaLabel: "À propos de moi", homeAvailability: "Disponible", homeTitleLine1: "Full-Stack", homeTitleLine2: "Developer.",
   homeAboutTitle: "Des idées utiles.", homeAboutAccent: "Du code qui compte.", homeAboutCta: "Découvrir", homeFeaturedTitle: "Ce que je construis", homeFeaturedAccent: "en ce moment.", homeContactTitle: "Un projet ?", homeContactAccent: "Parlons-en.",
   aboutTitleLine1: "Une développeuse", aboutTitleLine2: "orientée impact.", aboutAvailability: "Disponible", aboutLocation: "Bénin", aboutQuote: "Une citation.", aboutSkillsNote: "Compétences.", aboutEducationNote: "Formations.",
   portfolioTitleLine1: "Portfolio", portfolioTitleLine2: "Showcase", portfolioDescription: "Mes projets.", contactTitleLine1: "Construisons", contactTitleLine2: "quelque chose.", contactIntro: "Écrivez-moi.", footerBrand: "MERVYLKD.", footerCopy: "Avec soin.", navHomeLabel: "Accueil", navAboutLabel: "À propos", navPortfolioLabel: "Portfolio", navContactLabel: "Contact",

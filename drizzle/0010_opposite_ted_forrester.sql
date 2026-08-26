@@ -1,0 +1,1 @@
+ALTER TABLE `portfolio_site_content` ADD `contactMessagePlaceholder` varchar(240) DEFAULT 'Parlez-moi de votre projet...' NOT NULL;

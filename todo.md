@@ -121,6 +121,13 @@
 - [x] Vérifier desktop/mobile et enregistrer un checkpoint de livraison.
 
 - [x] Corriger la validation `educationInput.year` et ajouter des tests serveur pour années valides/invalides.
-- [ ] Rendre administrables les libellés encore codés en dur : onglets Portfolio, labels du formulaire Contact et microcopies publiques.
+- [x] Rendre administrables les libellés encore codés en dur : onglets Portfolio, labels du formulaire Contact et microcopies publiques.
 - [x] Ajouter des tests dédiés pour `portfolio.content` et `portfolio.education` : lecture publique, CRUD admin, permissions et rendu public.
-- [ ] Enregistrer un checkpoint après la validation finale desktop/mobile de ce lot éditorial.
+- [x] Enregistrer un checkpoint après la validation finale desktop/mobile de ce lot éditorial.
+
+- [x] Étendre `portfolio_site_content` et le formulaire admin pour gérer les libellés d’onglets, labels/placeholders Contact et microcopies Home.
+- [x] Connecter Home, Portfolio et Contact à ces nouveaux champs éditoriaux avec fallbacks et validations.
+- [x] Ajouter des tests UI vérifiant que ces libellés proviennent bien de `portfolio.content.get`.
+
+- [x] Ajouter un champ éditorial pour le placeholder du message Contact et le brancher dans l’admin et le front.
+- [x] Compléter les tests UI explicites des libellés éditoriaux Home et Contact.
