@@ -79,3 +79,6 @@ createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </trpc.Provider>
 );
+
+// Keep the first-paint boot animation visible until the interactive React intro is mounted.
+window.requestAnimationFrame(() => document.getElementById("boot-screen")?.remove());

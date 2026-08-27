@@ -196,3 +196,7 @@
 - [x] Réduire le temps d’écran noir avant l’animation principale de l’intro.
 - [x] Ajouter un effet de survol élégant et accessible sur les cartes de projets.
 - [x] Vérifier desktop/mobile, tester et enregistrer un checkpoint.
+
+- [x] Réduire le délai de l’écran noir vide avant le début de l’introduction.
+- [x] Augmenter la durée et la lisibilité des transitions entre les pages.
+- [x] Valider les durées sur desktop/mobile, mettre à jour les tests et enregistrer un checkpoint.
