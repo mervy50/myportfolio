@@ -225,6 +225,6 @@
 - [x] Permettre la gestion des logos depuis le panel admin et connecter le rendu public.
 - [x] Tester la grille sur desktop/mobile, l’accessibilité et les régressions, puis enregistrer un checkpoint.
 
-- [ ] Préparer et pousser la version Tech Stack vers `mervy50/myportfolio`.
-- [ ] Vérifier l’état distant et documenter les limites de GitHub Pages pour le backend full-stack.
-- [ ] Fournir les commandes locales et les options d’hébergement compatibles.
+- [x] Préparer et pousser la version Tech Stack vers `mervy50/myportfolio`.
+- [x] Vérifier l’état distant et documenter les limites de GitHub Pages pour le backend full-stack.
+- [x] Fournir les commandes locales et les options d’hébergement compatibles.
