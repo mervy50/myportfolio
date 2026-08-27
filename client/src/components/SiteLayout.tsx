@@ -1,5 +1,5 @@
 /* Charte aqua/noir : interface tech sombre, navigation compacte, cartes graphite et aqua signal réservé aux actions. */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
@@ -9,6 +9,8 @@ import { defaultSiteContent } from "@/lib/site-content";
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location, navigate] = useLocation();
+  const previousLocation = useRef(location);
+  const [routeIsChanging, setRouteIsChanging] = useState(false);
   const profileQuery = trpc.portfolio.profile.get.useQuery();
   const contentQuery = trpc.portfolio.content.get.useQuery();
   const profile = profileQuery.data;
@@ -21,6 +23,13 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   ];
   const visitTracker = trpc.portfolio.analytics.trackVisit.useMutation();
   const socialClickTracker = trpc.portfolio.analytics.trackSocialClick.useMutation();
+  useEffect(() => {
+    if (previousLocation.current === location) return;
+    previousLocation.current = location;
+    setRouteIsChanging(true);
+    const timeout = window.setTimeout(() => setRouteIsChanging(false), 480);
+    return () => window.clearTimeout(timeout);
+  }, [location]);
   useEffect(() => {
     if (location === "/admin") return;
     try {
@@ -45,6 +54,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   };
   return (
     <div className="app-shell">
+      <div className={routeIsChanging ? "route-sweep is-visible" : "route-sweep"} aria-hidden="true" />
       <div className="grid-noise" aria-hidden="true" />
       <header className="site-header">
         <Link href="/" className="site-logo" onClick={() => setMenuOpen(false)}>

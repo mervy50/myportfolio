@@ -178,3 +178,9 @@
 - [x] Enregistrer un checkpoint dédié après validation desktop/mobile des animations.
 
 - [x] Enregistrer un checkpoint dédié après validation desktop/mobile des animations de navigation et de clic.
+
+- [x] Rendre les transitions entre pages et les animations de blocs plus visibles dans le portfolio.
+- [x] Vérifier les animations sur desktop et mobile, ainsi que `prefers-reduced-motion`.
+- [x] Pousser et enregistrer un checkpoint de la nouvelle passe d’animation.
+
+- [ ] Pousser la passe d’animation sur GitHub et confirmer le SHA publié sur `main`.
