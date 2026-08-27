@@ -200,3 +200,10 @@
 - [x] Réduire le délai de l’écran noir vide avant le début de l’introduction.
 - [x] Augmenter la durée et la lisibilité des transitions entre les pages.
 - [x] Valider les durées sur desktop/mobile, mettre à jour les tests et enregistrer un checkpoint.
+
+- [x] Retirer le message du boot HTML pour éviter son apparition en double avec l’intro React.
+- [x] Conserver un repère visuel aqua discret pendant le montage initial.
+- [x] Ajouter un test anti-doublon, valider desktop/mobile et enregistrer un checkpoint.
+
+- [x] Supprimer complètement le repère aqua de préchargement.
+- [x] Vérifier que l’introduction apparaît directement sur desktop et mobile, puis enregistrer un checkpoint.

@@ -2,17 +2,6 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <style>
-      #boot-screen { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden; background: #050708; color: #eef7f7; }
-      #boot-screen .boot-message { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 38px); width: min(1040px, calc(100% - 40px)); font: 700 clamp(30px, 5.2vw, 70px)/.98 Sora, Arial, sans-serif; letter-spacing: -.075em; text-align: center; }
-      #boot-screen .boot-word { opacity: 0; }
-      #boot-screen .boot-word:first-child { animation: bootWordLeft 1.05s cubic-bezier(.23,1,.32,1) .08s forwards; }
-      #boot-screen .boot-word:last-child { color: #63e6e8; animation: bootWordRight 1.05s cubic-bezier(.23,1,.32,1) .08s forwards; }
-      @keyframes bootWordLeft { from { opacity: 0; transform: translateX(-50vw); } to { opacity: 1; transform: translateX(0); } }
-      @keyframes bootWordRight { from { opacity: 0; transform: translateX(50vw); } to { opacity: 1; transform: translateX(0); } }
-      @media (max-width: 600px) { #boot-screen .boot-message { gap: 12px; font-size: clamp(30px, 10vw, 48px); } }
-      @media (prefers-reduced-motion: reduce) { #boot-screen .boot-word { opacity: 1; animation: none; } }
-    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <meta name="theme-color" content="#080A0C" />
     <meta name="color-scheme" content="dark" />
@@ -43,9 +32,6 @@
     </script>
   </head>
   <body>
-    <div id="boot-screen" aria-hidden="true">
-      <div class="boot-message"><span class="boot-word">Welcome to my</span><span class="boot-word">Portfolio Website</span></div>
-    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script defer src="%VITE_ANALYTICS_ENDPOINT%/umami" data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
