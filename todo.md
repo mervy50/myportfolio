@@ -183,4 +183,4 @@
 - [x] Vérifier les animations sur desktop et mobile, ainsi que `prefers-reduced-motion`.
 - [x] Pousser et enregistrer un checkpoint de la nouvelle passe d’animation.
 
-- [ ] Pousser la passe d’animation sur GitHub et confirmer le SHA publié sur `main`.
+- [x] Pousser la passe d’animation sur GitHub et confirmer le SHA publié sur `main`.
