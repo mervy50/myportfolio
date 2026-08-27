@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ADMIN_PATH } from "../shared/const";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
@@ -24,6 +25,12 @@ describe("portfolio admin procedures", () => {
       stack: "React, TypeScript",
       status: "Draft",
     })).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
+  it("keeps the private admin surface protected for a non-admin user", async () => {
+    const caller = appRouter.createCaller(contextFor("user"));
+    expect(ADMIN_PATH).toBe("/espace-prive-mervy");
+    await expect(caller.portfolio.projects.delete({ id: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 
   it("rejects invalid admin project data before touching the database", async () => {

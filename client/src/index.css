@@ -79,8 +79,24 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
 .home-about h2 { max-width: 430px; }.about-side { padding-top: 12px; max-width: 450px; }.about-side p { color: var(--muted); line-height: 1.7; font-size: 14px; margin-bottom: 29px; }
 .home-featured { border-top: 1px solid var(--line); padding: 82px 0 128px; }.feature-heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 42px; }.feature-heading .kicker { margin-bottom: 18px; }.feature-heading h2 { margin: 0; }.featured-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; }.featured-card { background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 11px; transition: border-color .2s, transform .25s var(--ease); }.featured-card:hover { border-color: rgba(99,230,232,.38); transform: translateY(-4px); }.featured-3 { grid-column: 1 / -1; }.mini-preview { height: 196px; position: relative; overflow: hidden; border-radius: 8px; border: 1px solid var(--line); background: linear-gradient(135deg, #1A2326, #0D1012); padding: 17px; display: flex; flex-direction: column; justify-content: end; }.featured-2 .mini-preview { height: 240px; background: linear-gradient(145deg, #112126, #0C1316); }.featured-3 .mini-preview { height: 174px; background: linear-gradient(135deg, #111A1F, #162327); }.mini-preview > span { font: 9px 'JetBrains Mono'; position: absolute; top: 16px; left: 17px; }.mini-preview strong { font-size: 26px; letter-spacing: -.06em; }.mini-preview small { color: var(--muted); margin-top: 6px; }.featured-meta { display: flex; gap: 10px; align-items: center; padding: 15px 3px 3px; color: var(--muted); font: 9px 'JetBrains Mono'; }.featured-meta span:nth-child(2) { margin-left: auto; }.featured-meta svg { color: var(--aqua); }
 .home-cta { text-align: center; padding: 105px 0 115px; border-top: 1px solid var(--line); }.home-cta .kicker { justify-content: center; display: flex; }.home-cta h2 { margin: 0 auto 32px; font-size: clamp(36px, 6vw, 63px); }
-.page-transition { animation: pageEnter .28s var(--ease) both; transform-origin: 50% 0; }
-@keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.page-transition { animation: pageEnter .42s var(--ease) both; transform-origin: 50% 0; }
+.page-transition > main > * { animation: sectionReveal .5s var(--ease) both; }
+.page-transition > main > *:nth-child(2) { animation-delay: .04s; }
+.page-transition > main > *:nth-child(3) { animation-delay: .08s; }
+.page-transition > main > *:nth-child(4) { animation-delay: .12s; }
+.page-transition > main > *:nth-child(5) { animation-delay: .16s; }
+.aqua-button, .round-link { position: relative; overflow: hidden; }
+.aqua-button::after, .round-link::after { content: ''; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,.44); pointer-events: none; transform: scale(0); opacity: .36; transition: transform .42s var(--ease), opacity .42s var(--ease); }
+.aqua-button:active::after, .round-link:active::after { transform: scale(12); opacity: 0; }
+.site-nav a::before { content: ''; position: absolute; left: 3px; right: 3px; bottom: 2px; height: 1px; background: var(--aqua); transform: scaleX(0); transform-origin: right; transition: transform .24s var(--ease); }
+.site-nav a:hover::before, .site-nav a:focus-visible::before { transform: scaleX(1); transform-origin: left; }
+@keyframes pageEnter { from { opacity: 0; transform: translateY(14px) scale(.995); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes sectionReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .page-transition, .page-transition > main > * { animation: none !important; }
+  .aqua-button::after, .round-link::after { transition: none; }
+}
 .project-breadcrumb { margin-bottom: 20px; }
 .project-breadcrumb ol { gap: 8px; }
 .project-breadcrumb a, .project-breadcrumb [role="link"] { color: var(--muted); font: 9px 'JetBrains Mono'; letter-spacing: .04em; }

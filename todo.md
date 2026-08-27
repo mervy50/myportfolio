@@ -162,3 +162,19 @@
 - [x] Retirer le lien Admin du footer et de toute navigation publique.
 - [x] Ajouter une régression UI de non-exposition et revalider l’accès admin protégé.
 - [x] Pousser la correction sur GitHub et documenter l’accès privé au panel.
+
+- [x] Auditer les transitions et micro-interactions actuellement présentes.
+- [x] Ajouter une transition chic entre les routes et des feedbacks visuels au clic.
+- [x] Respecter `prefers-reduced-motion` et préserver le focus clavier.
+- [x] Ajouter ou ajuster les tests, vérifier desktop/mobile et pousser un checkpoint.
+
+- [x] Définir un chemin admin configurable sans exposer le chemin public historique.
+- [x] Adapter le routage client, le callback OAuth et la documentation à ce chemin privé.
+- [x] Ajouter une alerte propriétaire pour les tentatives d’accès admin refusées, avec limitation anti-spam.
+- [x] Documenter que la 2FA dépend du fournisseur OAuth et préciser la procédure de vérification.
+- [x] Ajouter les tests de routage, autorisation et notification, puis valider et pousser la version.
+
+- [x] Vérifier visuellement les nouvelles animations et micro-interactions en viewport mobile.
+- [x] Enregistrer un checkpoint dédié après validation desktop/mobile des animations.
+
+- [x] Enregistrer un checkpoint dédié après validation desktop/mobile des animations de navigation et de clic.

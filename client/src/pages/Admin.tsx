@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowLeft, ArrowUp, Award, BarChart3, Download, Eye, Github, GripVertical, Linkedin, LogIn, Mail, MessageSquare, Pencil, Plus, RefreshCw, Save, ShieldCheck, Trash2, UserRound, Wrench, X } from "lucide-react";
 import { Link } from "wouter";
 import { startLogin } from "@/const";
+import { ADMIN_PATH } from "../admin-path";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -38,6 +39,7 @@ export default function Admin() {
   const [editingEducationId, setEditingEducationId] = useState<number | null>(null);
   const [draggingProjectId, setDraggingProjectId] = useState<number | null>(null);
   const [feedback, setFeedback] = useState("");
+  const accessAlertSent = useRef(false);
 
   const isAdmin = user?.role === "admin";
   const projects = trpc.portfolio.projects.list.useQuery(undefined, { enabled: isAdmin });
@@ -48,10 +50,16 @@ export default function Admin() {
   const education = trpc.portfolio.education.list.useQuery(undefined, { enabled: isAdmin });
   const analytics = trpc.portfolio.analytics.stats.useQuery(undefined, { enabled: isAdmin, refetchInterval: 30000 });
   const messages = trpc.contact.inbox.list.useQuery(undefined, { enabled: isAdmin });
+  const deniedAccessReporter = trpc.portfolio.security.reportAdminAccessDenied.useMutation();
   const [orderedProjects, setOrderedProjects] = useState<ProjectRecord[]>([]);
   useEffect(() => { if (projects.data) setOrderedProjects(projects.data as ProjectRecord[]); }, [projects.data]);
   useEffect(() => { if (profile.data) setProfileForm({ name: profile.data.name, role: profile.data.role, bio: profile.data.bio, email: profile.data.email, github: profile.data.github, linkedin: profile.data.linkedin, photoUrl: profile.data.photoUrl || "", aboutPhotoUrl: profile.data.aboutPhotoUrl || "", cvUrl: profile.data.cvUrl || "" }); }, [profile.data]);
   useEffect(() => { if (siteContent.data) setSiteForm(siteContent.data); }, [siteContent.data]);
+  useEffect(() => {
+    if (loading || isAdmin || accessAlertSent.current) return;
+    accessAlertSent.current = true;
+    deniedAccessReporter.mutate({ path: ADMIN_PATH, reason: user ? "not_admin" : "unauthenticated" });
+  }, [loading, isAdmin, user]);
 
   const utils = trpc.useUtils();
   const showError = (error: { message: string }) => setFeedback(`Erreur : ${error.message}`);

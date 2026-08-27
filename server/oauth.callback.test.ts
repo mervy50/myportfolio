@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock("./_core/sdk", () => ({ sdk: mocks }));
 vi.mock("./db", () => ({ upsertUser: mocks.upsertUser }));
 
-import { encodeOAuthState } from "../shared/const";
+import { ADMIN_PATH, encodeOAuthState } from "../shared/const";
 import { registerOAuthRoutes } from "./_core/oauth";
 
 function createRouteApp() {
@@ -29,7 +29,7 @@ describe("OAuth admin callback", () => {
     mocks.upsertUser.mockResolvedValue(undefined);
     const { app, getHandler } = createRouteApp();
     registerOAuthRoutes(app as any);
-    const state = encodeOAuthState({ redirectUri: "https://portfolio.example/api/oauth/callback", nonce: "nonce-1234567890", returnPath: "/admin" });
+    const state = encodeOAuthState({ redirectUri: "https://portfolio.example/api/oauth/callback", nonce: "nonce-1234567890", returnPath: ADMIN_PATH });
     const response = { status: vi.fn().mockReturnThis(), json: vi.fn().mockReturnThis(), clearCookie: vi.fn(), cookie: vi.fn(), redirect: vi.fn() };
 
     await getHandler()?.({ query: { code: "authorization-code", state }, headers: { cookie: "__Host-oauth_state=nonce-1234567890" }, protocol: "https" }, response);
@@ -37,6 +37,6 @@ describe("OAuth admin callback", () => {
     expect(mocks.upsertUser).toHaveBeenCalledOnce();
     expect(mocks.createSessionToken).toHaveBeenCalledWith("owner-open-id", expect.objectContaining({ name: "Owner" }));
     expect(response.cookie).toHaveBeenCalledWith("app_session_id", "session-token", expect.objectContaining({ sameSite: "lax", secure: true, httpOnly: true }),);
-    expect(response.redirect).toHaveBeenCalledWith(302, "/admin");
+    expect(response.redirect).toHaveBeenCalledWith(302, ADMIN_PATH);
   });
 });

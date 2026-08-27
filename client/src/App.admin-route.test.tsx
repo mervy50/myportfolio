@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import React from "react";
+import { ADMIN_PATH } from "./admin-path";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -21,8 +22,8 @@ afterEach(() => {
 });
 
 describe("routage admin", () => {
-  it("isole /admin du layout public", () => {
-    window.history.pushState({}, "", "/admin");
+  it("isole le chemin privé admin du layout public", () => {
+    window.history.pushState({}, "", ADMIN_PATH);
     render(<App />);
 
     expect(screen.getByTestId("admin-page")).toBeTruthy();

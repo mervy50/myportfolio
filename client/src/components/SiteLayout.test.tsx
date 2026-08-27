@@ -25,7 +25,9 @@ describe("SiteLayout navigation", () => {
     expect(document.querySelector(".page-transition")).not.toBeNull();
     const stylesheet = readFileSync(path.resolve(import.meta.dirname, "../index.css"), "utf8");
     expect(stylesheet).toContain(".page-transition { animation: pageEnter");
-    expect(stylesheet).toContain("@media (prefers-reduced-motion: reduce) { .page-transition");
+    expect(stylesheet).toContain("@media (prefers-reduced-motion: reduce) {");
+    expect(stylesheet).toContain("@keyframes sectionReveal");
+    expect(stylesheet).toContain(".aqua-button:active::after");
   });
 
   it("navigates with a click and no longer displays section numbers", async () => {

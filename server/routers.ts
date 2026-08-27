@@ -78,6 +78,14 @@ const skillInput = z.object({
 });
 const reorderInput = z.object({ order: z.array(z.object({ id: z.number().int().positive(), displayOrder: z.number().int().min(0) })).min(1).max(100) });
 const analyticsEventInput = z.object({ sessionId: z.string().trim().min(16).max(128), path: z.string().trim().min(1).max(200) });
+const adminAccessDeniedInput = z.object({ path: z.string().trim().startsWith("/").max(160), reason: z.enum(["unauthenticated", "not_admin"]) });
+const deniedAccessAlertByOrigin = new Map<string, number>();
+const DENIED_ACCESS_ALERT_WINDOW_MS = 15 * 60 * 1000;
+
+const getRequestOrigin = (req: { headers?: Record<string, string | string[] | undefined>; ip?: string }): string => {
+  const forwarded = req.headers?.["x-forwarded-for"];
+  return typeof forwarded === "string" ? forwarded.split(",")[0].trim() : req.ip || "unknown";
+};
 const socialClickInput = analyticsEventInput.extend({ platform: z.enum(["github", "linkedin"]) });
 const siteContentInput = z.object({
   headerBrand: z.string().trim().min(1).max(120), portfolioProjectsLabel: z.string().trim().min(1).max(80), portfolioCertificationsLabel: z.string().trim().min(1).max(80), portfolioTechStackLabel: z.string().trim().min(1).max(80), contactFormTitle: z.string().trim().min(1).max(120), contactNameLabel: z.string().trim().min(1).max(120), contactEmailLabel: z.string().trim().min(1).max(120), contactMessageLabel: z.string().trim().min(1).max(120), contactMessagePlaceholder: z.string().trim().min(1).max(240), contactSubmitLabel: z.string().trim().min(1).max(120), homeProjectsLabel: z.string().trim().min(1).max(120), homeTechnologiesLabel: z.string().trim().min(1).max(120), homeCuriosityLabel: z.string().trim().min(1).max(120), homeProjectsCta: z.string().trim().min(1).max(120), homeAboutCtaLabel: z.string().trim().min(1).max(120), homeAvailability: z.string().trim().min(2).max(240), homeTitleLine1: z.string().trim().min(1).max(160), homeTitleLine2: z.string().trim().min(1).max(160), homeAboutTitle: z.string().trim().min(1).max(240), homeAboutAccent: z.string().trim().min(1).max(240), homeAboutCta: z.string().trim().min(1).max(160), homeFeaturedTitle: z.string().trim().min(1).max(240), homeFeaturedAccent: z.string().trim().min(1).max(240), homeContactTitle: z.string().trim().min(1).max(240), homeContactAccent: z.string().trim().min(1).max(240), aboutTitleLine1: z.string().trim().min(1).max(160), aboutTitleLine2: z.string().trim().min(1).max(160), aboutAvailability: z.string().trim().min(1).max(240), aboutLocation: z.string().trim().min(1).max(240), aboutQuote: z.string().trim().min(1).max(500), aboutSkillsNote: z.string().trim().min(1).max(500), aboutEducationNote: z.string().trim().min(1).max(500), portfolioTitleLine1: z.string().trim().min(1).max(160), portfolioTitleLine2: z.string().trim().min(1).max(160), portfolioDescription: z.string().trim().min(1).max(500), contactTitleLine1: z.string().trim().min(1).max(160), contactTitleLine2: z.string().trim().min(1).max(160), contactIntro: z.string().trim().min(1).max(500), footerBrand: z.string().trim().min(1).max(120), footerCopy: z.string().trim().min(1).max(240), navHomeLabel: z.string().trim().min(1).max(80), navAboutLabel: z.string().trim().min(1).max(80), navPortfolioLabel: z.string().trim().min(1).max(80), navContactLabel: z.string().trim().min(1).max(80),
@@ -117,6 +125,21 @@ export const appRouter = router({
   }),
 
   portfolio: router({
+    security: router({
+      reportAdminAccessDenied: publicProcedure.input(adminAccessDeniedInput).mutation(async ({ ctx, input }) => {
+        const origin = getRequestOrigin(ctx.req);
+        const now = Date.now();
+        const lastAlert = deniedAccessAlertByOrigin.get(origin) ?? 0;
+        if (now - lastAlert < DENIED_ACCESS_ALERT_WINDOW_MS) return { notified: false, throttled: true } as const;
+        deniedAccessAlertByOrigin.set(origin, now);
+        const userAgent = String(ctx.req.headers?.["user-agent"] || "inconnu").slice(0, 240);
+        const notified = await notifyOwner({
+          title: "Accès admin refusé",
+          content: `Chemin : ${input.path}\nMotif : ${input.reason}\nOrigine : ${origin}\nNavigateur : ${userAgent}`,
+        });
+        return { notified, throttled: false } as const;
+      }),
+    }),
     content: router({
       get: publicProcedure.query(getPortfolioSiteContent),
       update: adminProcedure.input(siteContentInput).mutation(async ({ input }) => upsertPortfolioSiteContent(input)),
