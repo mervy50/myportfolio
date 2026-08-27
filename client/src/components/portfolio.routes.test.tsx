@@ -53,8 +53,10 @@ async function runJourney(viewport: number) {
   render(<PortfolioRoutes />);
 
   expect(screen.queryByRole("link", { name: /Télécharger mon CV/ })).toBeNull();
+  expect(screen.queryByText(/Disponible/)).toBeNull();
   await navigateFromMenu(user, "/about");
   expect(screen.getByRole("heading", { name: /Une développeuse/ })).toBeTruthy();
+  expect(screen.queryByText(/Disponible/)).toBeNull();
   expect(screen.getByRole("link", { name: /Télécharger mon CV/ }).getAttribute("href")).toBe("/cv.pdf");
 
   await navigateFromMenu(user, "/portfolio");

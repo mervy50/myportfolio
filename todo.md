@@ -149,3 +149,7 @@
 - [x] Préparer l’état Git et vérifier qu’aucun secret ou fichier sensible ne sera poussé.
 - [x] Pousser la version actuelle vers `mervy50/myportfolio`.
 - [x] Vérifier le commit et la branche distants, puis documenter le lancement local.
+
+- [x] Repérer et retirer toutes les occurrences du bandeau « 01 / Disponible pour de nouveaux projets ».
+- [x] Vérifier le rendu et les tests après suppression du bandeau.
+- [x] Pousser la correction sur GitHub.
