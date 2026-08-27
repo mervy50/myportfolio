@@ -184,3 +184,10 @@
 - [x] Pousser et enregistrer un checkpoint de la nouvelle passe d’animation.
 
 - [x] Pousser la passe d’animation sur GitHub et confirmer le SHA publié sur `main`.
+
+- [x] Ajouter une introduction plein écran au premier chargement avec « Welcome to my Portfolio Website ».
+- [x] Animer les groupes de mots depuis les côtés, les réunir au centre, maintenir l’intro quelques secondes puis révéler l’accueil.
+- [x] Ralentir les transitions entre pages et les apparitions des blocs avec un rythme lisible.
+- [x] Respecter `prefers-reduced-motion`, tester desktop/mobile et enregistrer un checkpoint.
+
+- [ ] Enregistrer un checkpoint dédié après l’introduction plein écran et le ralentissement des transitions.

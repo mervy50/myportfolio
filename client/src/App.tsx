@@ -2,6 +2,7 @@
 import React from "react";
 import { ADMIN_PATH } from "./admin-path";
 import { Toaster } from "@/components/ui/sonner";
+import WelcomeIntro from "./components/WelcomeIntro";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch, useLocation } from "wouter";
@@ -30,6 +31,8 @@ function Router() {
 
 export default function App() {
   const [location] = useLocation();
+  const [showWelcome, setShowWelcome] = React.useState(() => location === "/");
   const isAdminRoute = location === ADMIN_PATH;
-  return <ErrorBoundary><ThemeProvider defaultTheme="dark"><TooltipProvider><Toaster />{isAdminRoute ? <Router /> : <SiteLayout><Router /></SiteLayout>}</TooltipProvider></ThemeProvider></ErrorBoundary>;
+  const completeWelcome = React.useCallback(() => setShowWelcome(false), []);
+  return <ErrorBoundary><ThemeProvider defaultTheme="dark"><TooltipProvider><Toaster />{isAdminRoute ? <Router /> : <><SiteLayout><Router /></SiteLayout>{showWelcome && location === "/" && <WelcomeIntro onComplete={completeWelcome} />}</>}</TooltipProvider></ThemeProvider></ErrorBoundary>;
 }
