@@ -44,6 +44,16 @@ describe("SiteLayout navigation", () => {
     expect(document.querySelector(".page-frame")).not.toBe(initialFrame);
   });
 
+  it("varies transition classes for forward and return navigation", async () => {
+    const user = userEvent.setup();
+    renderLayout();
+    await user.click(within(screen.getByRole("navigation", { name: "Navigation principale" })).getByRole("link", { name: "À propos" }));
+    expect(document.querySelector(".page-transition")?.classList.contains("page-transition--forward")).toBe(true);
+
+    await user.click(screen.getByRole("link", { name: "Accueil" }));
+    expect(document.querySelector(".page-transition")?.classList.contains("page-transition--return")).toBe(true);
+  });
+
   it("opens the mobile menu and supports keyboard activation", async () => {
     const user = userEvent.setup();
     renderLayout();

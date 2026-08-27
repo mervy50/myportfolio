@@ -97,8 +97,18 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
 .welcome-intro__skip:active { transform: scale(.96); }
 .welcome-intro.is-closing { animation: introExit .8s var(--ease) forwards; pointer-events: none; }
 .route-sweep { position: fixed; inset: 0 auto 0 0; width: 2px; background: linear-gradient(180deg, transparent, var(--aqua), transparent); box-shadow: 0 0 28px 8px rgba(99,230,232,.35); transform: translateX(-12px); opacity: 0; pointer-events: none; z-index: 30; }
-.route-sweep.is-visible { animation: routeSweep 1.8s var(--ease) both; }
-.page-transition { animation: pageEnter 1.1s var(--ease) both; transform-origin: 50% 0; }
+.route-sweep.is-visible { animation-duration: 2.2s; animation-timing-function: var(--ease); animation-fill-mode: both; }
+.route-sweep--forward.is-visible { animation-name: routeSweepForward; }
+.route-sweep--backward.is-visible { animation-name: routeSweepBackward; }
+.route-sweep--focus { width: 100vw; height: 1px; inset: 50% auto auto -100vw; background: linear-gradient(90deg, transparent, var(--aqua), transparent); box-shadow: 0 0 30px 8px rgba(99,230,232,.28); }
+.route-sweep--focus.is-visible { animation-name: routeSweepFocus; }
+.route-sweep--return { width: 100vw; height: 2px; inset: auto 0 -12px auto; background: linear-gradient(90deg, transparent, var(--aqua), transparent); box-shadow: 0 0 30px 8px rgba(99,230,232,.28); }
+.route-sweep--return.is-visible { animation-name: routeSweepReturn; }
+.page-transition { animation: pageEnterForward 1.2s var(--ease) both; transform-origin: 50% 0; }
+.page-transition--forward { animation-name: pageEnterForward; transform-origin: 50% 0; }
+.page-transition--backward { animation-name: pageEnterBackward; transform-origin: 50% 0; }
+.page-transition--focus { animation-name: pageEnterFocus; transform-origin: 50% 50%; }
+.page-transition--return { animation-name: pageEnterReturn; transform-origin: 50% 100%; }
 .page-transition > main > * { animation: sectionReveal 1.18s var(--ease) both; }
 .featured-card, .showcase-card, .skill-card, .cert-card, .stack-card, .stat-card, .education-row, .contact-form, .contact-info, .detail-hero, .side-card { animation: blockReveal 1.08s var(--ease) both; }
 .featured-card:nth-child(2), .showcase-card:nth-child(2), .skill-card:nth-child(2), .cert-card:nth-child(2), .stack-card:nth-child(2), .stat-card:nth-child(2), .education-row:nth-child(2) { animation-delay: .08s; }
@@ -132,8 +142,14 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
 @keyframes introRuleIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes introOrbFloat { from { transform: rotate(-28deg) translate3d(-12px, 8px, 0); } to { transform: rotate(-20deg) translate3d(12px, -8px, 0); } }
 @keyframes introExit { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.025); visibility: hidden; } }
-@keyframes routeSweep { 0% { opacity: 0; transform: translateX(-12px); } 18% { opacity: 1; } 100% { opacity: 0; transform: translateX(100vw); } }
-@keyframes pageEnter { from { opacity: 0; transform: translateY(14px) scale(.995); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes routeSweepForward { 0% { opacity: 0; transform: translateX(-12px); } 18% { opacity: 1; } 100% { opacity: 0; transform: translateX(100vw); } }
+@keyframes routeSweepBackward { 0% { opacity: 0; transform: translateX(100vw); } 18% { opacity: 1; } 100% { opacity: 0; transform: translateX(-12px); } }
+@keyframes routeSweepFocus { 0% { opacity: 0; transform: translateX(-15vw) scaleX(.35); } 22% { opacity: 1; } 55% { opacity: 1; transform: translateX(0) scaleX(1); } 100% { opacity: 0; transform: translateX(115vw) scaleX(.35); } }
+@keyframes routeSweepReturn { 0% { opacity: 0; transform: translateY(12px); } 18% { opacity: 1; } 100% { opacity: 0; transform: translateY(-100vh); } }
+@keyframes pageEnterForward { from { opacity: 0; transform: translateY(18px) scale(.992); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes pageEnterBackward { from { opacity: 0; transform: translateX(22px) scale(.994); } to { opacity: 1; transform: translateX(0) scale(1); } }
+@keyframes pageEnterFocus { from { opacity: 0; transform: translateY(8px) scale(.978); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes pageEnterReturn { from { opacity: 0; transform: translateY(-18px) scale(.992); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes sectionReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes blockReveal { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @media (prefers-reduced-motion: reduce) {

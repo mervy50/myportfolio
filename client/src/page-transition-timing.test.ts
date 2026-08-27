@@ -6,9 +6,15 @@ const css = readFileSync(resolve(process.cwd(), "client/src/index.css"), "utf8")
 
 describe("page transition timing", () => {
   it("keeps route changes cinematic instead of abrupt", () => {
-    expect(css).toMatch(/\.route-sweep\.is-visible\s*\{[^}]*animation:\s*routeSweep\s+1\.8s/);
-    expect(css).toMatch(/\.page-transition\s*\{[^}]*animation:\s*pageEnter\s+1\.1s/);
+    expect(css).toMatch(/\.route-sweep\.is-visible\s*\{[^}]*animation-duration:\s*2\.2s/);
+    expect(css).toMatch(/\.page-transition\s*\{[^}]*animation:\s*pageEnterForward\s+1\.2s/);
     expect(css).toMatch(/\.page-transition > main > \*\s*\{[^}]*animation:\s*sectionReveal\s+1\.18s/);
+    expect(css).toContain(".route-sweep--backward.is-visible");
+    expect(css).toContain(".route-sweep--focus.is-visible");
+    expect(css).toContain(".route-sweep--return.is-visible");
+    expect(css).toContain("@keyframes pageEnterBackward");
+    expect(css).toContain("@keyframes pageEnterFocus");
+    expect(css).toContain("@keyframes pageEnterReturn");
   });
 
   it("keeps reduced motion explicitly disabled", () => {

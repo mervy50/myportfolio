@@ -68,6 +68,7 @@ async function runJourney(viewport: number) {
   await user.click(screen.getByRole("link", { name: /Découvrir les détails/ }));
 
   expect(window.location.pathname).toBe("/portfolio/pitchlab");
+  expect(document.querySelector(".page-transition")?.classList.contains("page-transition--focus")).toBe(true);
   expect(screen.getByRole("navigation", { name: "breadcrumb" })).toBeTruthy();
   expect(screen.getByRole("heading", { name: /Pitchlab/ })).toBeTruthy();
 }

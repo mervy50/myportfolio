@@ -214,3 +214,8 @@
 
 - [x] Augmenter encore la durée du balayage aqua entre les pages.
 - [x] Synchroniser sa disparition avec la transition de route et valider le rendu.
+
+- [x] Prolonger légèrement le balayage aqua actuel.
+- [x] Créer plusieurs directions et types de transitions entre les pages.
+- [x] Brancher les variantes selon la page de destination et la direction de navigation.
+- [x] Tester desktop/mobile, `prefers-reduced-motion` et les régressions, puis enregistrer un checkpoint.

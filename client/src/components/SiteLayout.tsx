@@ -6,11 +6,28 @@ import { trpc } from "@/lib/trpc";
 import { getAnalyticsSessionId } from "@/lib/analytics";
 import { defaultSiteContent } from "@/lib/site-content";
 
+type TransitionVariant = "forward" | "backward" | "focus" | "return";
+
+const routeRank = (path: string) => {
+  if (path === "/") return 0;
+  if (path === "/about") return 1;
+  if (path === "/portfolio" || path.startsWith("/portfolio/")) return 2;
+  if (path === "/contact") return 3;
+  return 2;
+};
+
+const getTransitionVariant = (from: string, to: string): TransitionVariant => {
+  if (to === "/") return "return";
+  if (to.startsWith("/portfolio/")) return "focus";
+  return routeRank(to) < routeRank(from) ? "backward" : "forward";
+};
+
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location, navigate] = useLocation();
   const previousLocation = useRef(location);
   const [routeIsChanging, setRouteIsChanging] = useState(false);
+  const [transitionVariant, setTransitionVariant] = useState<TransitionVariant>("forward");
   const profileQuery = trpc.portfolio.profile.get.useQuery();
   const contentQuery = trpc.portfolio.content.get.useQuery();
   const profile = profileQuery.data;
@@ -25,9 +42,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   const socialClickTracker = trpc.portfolio.analytics.trackSocialClick.useMutation();
   useEffect(() => {
     if (previousLocation.current === location) return;
+    const nextVariant = getTransitionVariant(previousLocation.current, location);
     previousLocation.current = location;
+    setTransitionVariant(nextVariant);
     setRouteIsChanging(true);
-    const timeout = window.setTimeout(() => setRouteIsChanging(false), 1850);
+    const timeout = window.setTimeout(() => setRouteIsChanging(false), 2250);
     return () => window.clearTimeout(timeout);
   }, [location]);
   useEffect(() => {
@@ -43,7 +62,10 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   const trackSocialClick = (platform: "github" | "linkedin") => { socialClickTracker.mutate({ sessionId: getAnalyticsSessionId(), path: location, platform }); };
   const handleNavigation = (href: string) => {
     setMenuOpen(false);
-    if (location !== href) navigate(href);
+    if (location !== href) {
+      setTransitionVariant(getTransitionVariant(location, href));
+      navigate(href);
+    }
   };
   const toggleMenu = () => setMenuOpen(open => !open);
   const handleMenuKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -54,7 +76,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   };
   return (
     <div className="app-shell">
-      <div className={routeIsChanging ? "route-sweep is-visible" : "route-sweep"} aria-hidden="true" />
+      <div className={`route-sweep route-sweep--${transitionVariant}${routeIsChanging ? " is-visible" : ""}`} aria-hidden="true" />
       <div className="grid-noise" aria-hidden="true" />
       <header className="site-header">
         <Link href="/" className="site-logo" onClick={() => setMenuOpen(false)}>
@@ -67,7 +89,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         {profile?.email && <a className="header-mail" href={`mailto:${profile.email}`}>{profile.email}</a>}
         <button type="button" className="mobile-toggle" onClick={toggleMenu} onKeyDown={handleMenuKeyDown} aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button>
       </header>
-      <div className="page-frame" key={location}><div className="page-transition">{children}</div></div>
+      <div className="page-frame" key={location}><div className={`page-transition page-transition--${transitionVariant}`}>{children}</div></div>
       <footer className="site-footer">
         <Link href="/" className="footer-brand">{content.footerBrand}</Link>
         <span className="footer-copy">{content.footerCopy}</span>
