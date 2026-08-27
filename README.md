@@ -27,3 +27,8 @@ pnpm build
 ```
 
 Le compte administrateur dépend de l’authentification OAuth configurée et du rôle `admin` enregistré en base. Les secrets de production doivent être ajoutés dans l’interface de gestion de l’hébergement choisi, jamais dans le dépôt GitHub.
+
+
+## Accès au panel administrateur
+
+Le panel d’administration n’est volontairement pas affiché dans la navigation ni dans le pied de page du portfolio public. Pour l’ouvrir, utilisez directement l’URL `/admin` de votre installation, par exemple `http://localhost:3000/admin` en local. L’accès reste protégé par l’authentification OAuth et par le rôle `admin` enregistré en base : connaître l’URL ne permet donc pas à un visiteur non autorisé de gérer le contenu.

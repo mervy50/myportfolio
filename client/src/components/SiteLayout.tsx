@@ -60,7 +60,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <div className="page-frame" key={location}><div className="page-transition">{children}</div></div>
       <footer className="site-footer">
         <Link href="/" className="footer-brand">{content.footerBrand}</Link>
-        <span className="footer-copy">{content.footerCopy}</span><Link href="/admin" className="footer-admin">Admin</Link>
+        <span className="footer-copy">{content.footerCopy}</span>
         <div className="footer-links">{profile?.github && <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" onClick={() => trackSocialClick("github")}><Github size={16} /></a>}{profile?.linkedin && <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" onClick={() => trackSocialClick("linkedin")}><Linkedin size={16} /></a>}{profile?.email && <a href={`mailto:${profile.email}`} aria-label="Email"><Mail size={16} /></a>}</div>
       </footer>
     </div>

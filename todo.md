@@ -158,7 +158,7 @@
 - [x] Corriger la localisation affichée en « Porto-Novo, Bénin » dans les contenus administrables et le front.
 - [x] Ajouter ou ajuster les tests, valider le rendu et pousser la correction sur GitHub.
 
-- [ ] Auditer le lien Admin public et confirmer la protection serveur de `/admin`.
-- [ ] Retirer le lien Admin du footer et de toute navigation publique.
-- [ ] Ajouter une régression UI de non-exposition et revalider l’accès admin protégé.
-- [ ] Pousser la correction sur GitHub et documenter l’accès privé au panel.
+- [x] Auditer le lien Admin public et confirmer la protection serveur de `/admin`.
+- [x] Retirer le lien Admin du footer et de toute navigation publique.
+- [x] Ajouter une régression UI de non-exposition et revalider l’accès admin protégé.
+- [x] Pousser la correction sur GitHub et documenter l’accès privé au panel.

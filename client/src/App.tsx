@@ -1,8 +1,9 @@
 /* Charte aqua/noir : routing multi-pages avec une enveloppe commune pour conserver la navigation flottante et la hiérarchie technique. */
+import React from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SiteLayout from "./components/SiteLayout";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -27,5 +28,7 @@ function Router() {
 }
 
 export default function App() {
-  return <ErrorBoundary><ThemeProvider defaultTheme="dark"><TooltipProvider><Toaster /><SiteLayout><Router /></SiteLayout></TooltipProvider></ThemeProvider></ErrorBoundary>;
+  const [location] = useLocation();
+  const isAdminRoute = location === "/admin";
+  return <ErrorBoundary><ThemeProvider defaultTheme="dark"><TooltipProvider><Toaster />{isAdminRoute ? <Router /> : <SiteLayout><Router /></SiteLayout>}</TooltipProvider></ThemeProvider></ErrorBoundary>;
 }

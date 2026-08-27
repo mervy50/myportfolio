@@ -35,6 +35,7 @@ describe("SiteLayout navigation", () => {
     const initialFrame = document.querySelector(".page-frame");
 
     expect(within(navigation).queryByText(/0[1-4]/)).toBeNull();
+    expect(screen.queryByRole("link", { name: "Admin" })).toBeNull();
     await user.click(within(navigation).getByRole("link", { name: "À propos" }));
 
     expect(window.location.pathname).toBe("/about");
