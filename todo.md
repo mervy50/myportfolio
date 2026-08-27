@@ -224,3 +224,7 @@
 - [x] Ajouter les données de logo/couleur nécessaires aux compétences existantes sans perdre les contenus actuels.
 - [x] Permettre la gestion des logos depuis le panel admin et connecter le rendu public.
 - [x] Tester la grille sur desktop/mobile, l’accessibilité et les régressions, puis enregistrer un checkpoint.
+
+- [ ] Préparer et pousser la version Tech Stack vers `mervy50/myportfolio`.
+- [ ] Vérifier l’état distant et documenter les limites de GitHub Pages pour le backend full-stack.
+- [ ] Fournir les commandes locales et les options d’hébergement compatibles.
