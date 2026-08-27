@@ -74,6 +74,9 @@ const profileInput = z.object({
 const skillInput = z.object({
   groupName: z.string().trim().min(2).max(120),
   name: z.string().trim().min(2).max(120),
+  iconKey: z.string().trim().max(80).optional().or(z.literal("")),
+  iconColor: z.string().trim().regex(/^#[0-9a-fA-F]{6}$/).optional().or(z.literal("")),
+  iconUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
   displayOrder: z.number().int().min(0).default(0),
 });
 const reorderInput = z.object({ order: z.array(z.object({ id: z.number().int().positive(), displayOrder: z.number().int().min(0) })).min(1).max(100) });

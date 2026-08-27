@@ -63,7 +63,10 @@ describe("profile, skills and project ordering", () => {
     const caller = appRouter.createCaller(context());
     const profile = { name: "Merveille Elise", role: "Full-Stack Developer", bio: "Une présentation suffisamment longue pour le portfolio.", email: "mervylokodade50@gmail.com", github: "https://github.com/mervy50", linkedin: "https://linkedin.com/in/merveille-loko-dade-8728b1352/", photoUrl: "", cvUrl: "" };
     await expect(caller.portfolio.profile.update(profile)).resolves.toEqual({ id: 1 });
-    await expect(caller.portfolio.skills.create({ groupName: "Frontend", name: "React.js", displayOrder: 0 })).resolves.toEqual({ id: 4 });
+    const skillWithLogo = { groupName: "Frontend", name: "React.js", iconKey: "react", iconColor: "#61DAFB", iconUrl: "", displayOrder: 0 };
+    await expect(caller.portfolio.skills.create(skillWithLogo)).resolves.toEqual({ id: 4 });
+    expect(mocks.createPortfolioSkill).toHaveBeenCalledWith(skillWithLogo);
+    await expect(caller.portfolio.skills.create({ ...skillWithLogo, iconColor: "aqua" })).rejects.toMatchObject({ code: "BAD_REQUEST" });
     await expect(caller.portfolio.skills.update({ id: 4, data: { name: "React 19" } })).resolves.toEqual({ id: 4 });
     await expect(caller.portfolio.skills.delete({ id: 4 })).resolves.toEqual({ id: 4 });
     await expect(caller.portfolio.profile.delete()).resolves.toEqual({ id: 1 });

@@ -219,3 +219,8 @@
 - [x] Créer plusieurs directions et types de transitions entre les pages.
 - [x] Brancher les variantes selon la page de destination et la direction de navigation.
 - [x] Tester desktop/mobile, `prefers-reduced-motion` et les régressions, puis enregistrer un checkpoint.
+
+- [x] Transformer la Tech Stack en grille de cartes visuelles avec logos et noms.
+- [x] Ajouter les données de logo/couleur nécessaires aux compétences existantes sans perdre les contenus actuels.
+- [x] Permettre la gestion des logos depuis le panel admin et connecter le rendu public.
+- [x] Tester la grille sur desktop/mobile, l’accessibilité et les régressions, puis enregistrer un checkpoint.

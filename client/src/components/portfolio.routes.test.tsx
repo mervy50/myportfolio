@@ -15,7 +15,7 @@ vi.mock("@/lib/trpc", () => ({
       certifications: { list: { useQuery: () => ({ data: [{ id: 2, title: "KAS DIGIT", provider: "KAS", year: "2025", description: "Certification test.", attestationImageUrl: "/manus-storage/attestation.png" }] }) } },
       profile: { get: { useQuery: () => ({ data: { id: 1, name: "Merveille Elise LOKO-DADE", role: "Full-Stack Developer", bio: "Une présentation suffisamment longue pour le test.", email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example", photoUrl: null, aboutPhotoUrl: null, cvUrl: "/cv.pdf" } }) } },
       content: { get: { useQuery: () => ({ data: { headerBrand: "EDITED.", portfolioProjectsLabel: "Projets édités", portfolioCertificationsLabel: "Certifications éditées", portfolioTechStackLabel: "Tech édité", contactFormTitle: "Formulaire édité", contactNameLabel: "Nom édité", contactEmailLabel: "E-mail édité", contactMessageLabel: "Message édité", contactMessagePlaceholder: "Projet édité", contactSubmitLabel: "Envoyer édité", homeProjectsLabel: "Projets édités", homeTechnologiesLabel: "Technologies éditées", homeCuriosityLabel: "Curiosité éditée", homeProjectsCta: "Projets édités", homeAboutCtaLabel: "À propos édité", homeAvailability: "Disponible", homeTitleLine1: "Full-Stack", homeTitleLine2: "Developer.", homeAboutTitle: "Des idées utiles.", homeAboutAccent: "Du code qui compte.", homeAboutCta: "Découvrir", homeFeaturedTitle: "Ce que je construis", homeFeaturedAccent: "en ce moment.", homeContactTitle: "Un projet ?", homeContactAccent: "Parlons-en.", aboutTitleLine1: "Une développeuse", aboutTitleLine2: "orientée impact.", aboutAvailability: "Disponible", aboutLocation: "Porto-Novo, Bénin", aboutQuote: "Une citation.", aboutSkillsNote: "Compétences.", aboutEducationNote: "Formations.", portfolioTitleLine1: "Portfolio", portfolioTitleLine2: "Showcase", portfolioDescription: "Mes projets.", contactTitleLine1: "Construisons", contactTitleLine2: "quelque chose.", contactIntro: "Écrivez-moi.", footerBrand: "MERVYLKD.", footerCopy: "Avec soin.", navHomeLabel: "Accueil édité", navAboutLabel: "À propos", navPortfolioLabel: "Portfolio", navContactLabel: "Contact" } }) } },
-      skills: { list: { useQuery: () => ({ data: [{ id: 1, groupName: "Frontend", name: "React.js", displayOrder: 0 }] }) } },
+      skills: { list: { useQuery: () => ({ data: [{ id: 1, groupName: "Frontend", name: "React.js", iconKey: "react", iconColor: "#61DAFB", iconUrl: null, displayOrder: 0 }] }) } },
       education: { list: { useQuery: () => ({ data: [{ id: 1, title: "Licence", place: "Université", year: "2024", displayOrder: 0 }] }) } },
       analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) }, trackCvDownload: { useMutation: () => ({ mutate: vi.fn() }) }, trackSocialClick: { useMutation: () => ({ mutate: vi.fn() }) } },
     },
@@ -109,6 +109,17 @@ describe("portfolio route transitions", () => {
     expect(screen.getByText("Porto-Novo, Bénin")).toBeTruthy();
     expect(screen.queryByText("04 / Contact")).toBeNull();
     expect(screen.queryByText("01")).toBeNull();
+  });
+
+  it("affiche les logos authentiques dans la grille Tech Stack", async () => {
+    window.history.pushState({}, "", "/portfolio");
+    const user = userEvent.setup();
+    render(<PortfolioRoutes />);
+
+    await user.click(screen.getByRole("tab", { name: "Tech édité" }));
+    expect(screen.getByRole("img", { name: "Logo React" })).toBeTruthy();
+    expect(screen.getByText("React.js")).toBeTruthy();
+    expect(document.querySelector(".tech-tool-grid")).toBeTruthy();
   });
 
   it("affiche les images d’attestation dans l’onglet Certifications", async () => {
