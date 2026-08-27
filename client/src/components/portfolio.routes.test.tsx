@@ -14,7 +14,7 @@ vi.mock("@/lib/trpc", () => ({
       },
       certifications: { list: { useQuery: () => ({ data: [{ id: 2, title: "KAS DIGIT", provider: "KAS", year: "2025", description: "Certification test.", attestationImageUrl: "/manus-storage/attestation.png" }] }) } },
       profile: { get: { useQuery: () => ({ data: { id: 1, name: "Merveille Elise LOKO-DADE", role: "Full-Stack Developer", bio: "Une présentation suffisamment longue pour le test.", email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example", photoUrl: null, aboutPhotoUrl: null, cvUrl: "/cv.pdf" } }) } },
-      content: { get: { useQuery: () => ({ data: { headerBrand: "EDITED.", portfolioProjectsLabel: "Projets édités", portfolioCertificationsLabel: "Certifications éditées", portfolioTechStackLabel: "Tech édité", contactFormTitle: "Formulaire édité", contactNameLabel: "Nom édité", contactEmailLabel: "E-mail édité", contactMessageLabel: "Message édité", contactMessagePlaceholder: "Projet édité", contactSubmitLabel: "Envoyer édité", homeProjectsLabel: "Projets édités", homeTechnologiesLabel: "Technologies éditées", homeCuriosityLabel: "Curiosité éditée", homeProjectsCta: "Projets édités", homeAboutCtaLabel: "À propos édité", homeAvailability: "Disponible", homeTitleLine1: "Full-Stack", homeTitleLine2: "Developer.", homeAboutTitle: "Des idées utiles.", homeAboutAccent: "Du code qui compte.", homeAboutCta: "Découvrir", homeFeaturedTitle: "Ce que je construis", homeFeaturedAccent: "en ce moment.", homeContactTitle: "Un projet ?", homeContactAccent: "Parlons-en.", aboutTitleLine1: "Une développeuse", aboutTitleLine2: "orientée impact.", aboutAvailability: "Disponible", aboutLocation: "Bénin", aboutQuote: "Une citation.", aboutSkillsNote: "Compétences.", aboutEducationNote: "Formations.", portfolioTitleLine1: "Portfolio", portfolioTitleLine2: "Showcase", portfolioDescription: "Mes projets.", contactTitleLine1: "Construisons", contactTitleLine2: "quelque chose.", contactIntro: "Écrivez-moi.", footerBrand: "MERVYLKD.", footerCopy: "Avec soin.", navHomeLabel: "Accueil édité", navAboutLabel: "À propos", navPortfolioLabel: "Portfolio", navContactLabel: "Contact" } }) } },
+      content: { get: { useQuery: () => ({ data: { headerBrand: "EDITED.", portfolioProjectsLabel: "Projets édités", portfolioCertificationsLabel: "Certifications éditées", portfolioTechStackLabel: "Tech édité", contactFormTitle: "Formulaire édité", contactNameLabel: "Nom édité", contactEmailLabel: "E-mail édité", contactMessageLabel: "Message édité", contactMessagePlaceholder: "Projet édité", contactSubmitLabel: "Envoyer édité", homeProjectsLabel: "Projets édités", homeTechnologiesLabel: "Technologies éditées", homeCuriosityLabel: "Curiosité éditée", homeProjectsCta: "Projets édités", homeAboutCtaLabel: "À propos édité", homeAvailability: "Disponible", homeTitleLine1: "Full-Stack", homeTitleLine2: "Developer.", homeAboutTitle: "Des idées utiles.", homeAboutAccent: "Du code qui compte.", homeAboutCta: "Découvrir", homeFeaturedTitle: "Ce que je construis", homeFeaturedAccent: "en ce moment.", homeContactTitle: "Un projet ?", homeContactAccent: "Parlons-en.", aboutTitleLine1: "Une développeuse", aboutTitleLine2: "orientée impact.", aboutAvailability: "Disponible", aboutLocation: "Porto-Novo, Bénin", aboutQuote: "Une citation.", aboutSkillsNote: "Compétences.", aboutEducationNote: "Formations.", portfolioTitleLine1: "Portfolio", portfolioTitleLine2: "Showcase", portfolioDescription: "Mes projets.", contactTitleLine1: "Construisons", contactTitleLine2: "quelque chose.", contactIntro: "Écrivez-moi.", footerBrand: "MERVYLKD.", footerCopy: "Avec soin.", navHomeLabel: "Accueil édité", navAboutLabel: "À propos", navPortfolioLabel: "Portfolio", navContactLabel: "Contact" } }) } },
       skills: { list: { useQuery: () => ({ data: [{ id: 1, groupName: "Frontend", name: "React.js", displayOrder: 0 }] }) } },
       education: { list: { useQuery: () => ({ data: [{ id: 1, title: "Licence", place: "Université", year: "2024", displayOrder: 0 }] }) } },
       analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) }, trackCvDownload: { useMutation: () => ({ mutate: vi.fn() }) }, trackSocialClick: { useMutation: () => ({ mutate: vi.fn() }) } },
@@ -57,10 +57,12 @@ async function runJourney(viewport: number) {
   await navigateFromMenu(user, "/about");
   expect(screen.getByRole("heading", { name: /Une développeuse/ })).toBeTruthy();
   expect(screen.queryByText(/Disponible/)).toBeNull();
+  expect(screen.queryByText("01 / À propos")).toBeNull();
   expect(screen.getByRole("link", { name: /Télécharger mon CV/ }).getAttribute("href")).toBe("/cv.pdf");
 
   await navigateFromMenu(user, "/portfolio");
   expect(screen.getByRole("heading", { name: /Portfolio/ })).toBeTruthy();
+  expect(screen.queryByText("02 / Portfolio")).toBeNull();
 
   await user.click(screen.getByRole("button", { name: "Prévisualiser Pitchlab" }));
   await user.click(screen.getByRole("link", { name: /Découvrir les détails/ }));
@@ -103,6 +105,9 @@ describe("portfolio route transitions", () => {
     render(<PortfolioRoutes />);
     expect(screen.getByText("Formulaire édité")).toBeTruthy();
     expect(screen.getByPlaceholderText("Projet édité")).toBeTruthy();
+    expect(screen.getByText("Porto-Novo, Bénin")).toBeTruthy();
+    expect(screen.queryByText("04 / Contact")).toBeNull();
+    expect(screen.queryByText("01")).toBeNull();
   });
 
   it("affiche les images d’attestation dans l’onglet Certifications", async () => {

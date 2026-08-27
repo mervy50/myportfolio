@@ -153,3 +153,7 @@
 - [x] Repérer et retirer toutes les occurrences du bandeau « 01 / Disponible pour de nouveaux projets ».
 - [x] Vérifier le rendu et les tests après suppression du bandeau.
 - [x] Pousser la correction sur GitHub.
+
+- [x] Retirer les préfixes « 01 / À propos », « 02 / Portfolio » et « 04 / Contact » des pages publiques.
+- [x] Corriger la localisation affichée en « Porto-Novo, Bénin » dans les contenus administrables et le front.
+- [x] Ajouter ou ajuster les tests, valider le rendu et pousser la correction sur GitHub.
