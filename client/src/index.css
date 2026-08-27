@@ -97,7 +97,7 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
 .welcome-intro__skip:active { transform: scale(.96); }
 .welcome-intro.is-closing { animation: introExit .8s var(--ease) forwards; pointer-events: none; }
 .route-sweep { position: fixed; inset: 0 auto 0 0; width: 2px; background: linear-gradient(180deg, transparent, var(--aqua), transparent); box-shadow: 0 0 28px 8px rgba(99,230,232,.35); transform: translateX(-12px); opacity: 0; pointer-events: none; z-index: 30; }
-.route-sweep.is-visible { animation: routeSweep 1.15s var(--ease) both; }
+.route-sweep.is-visible { animation: routeSweep 1.8s var(--ease) both; }
 .page-transition { animation: pageEnter 1.1s var(--ease) both; transform-origin: 50% 0; }
 .page-transition > main > * { animation: sectionReveal 1.18s var(--ease) both; }
 .featured-card, .showcase-card, .skill-card, .cert-card, .stack-card, .stat-card, .education-row, .contact-form, .contact-info, .detail-hero, .side-card { animation: blockReveal 1.08s var(--ease) both; }

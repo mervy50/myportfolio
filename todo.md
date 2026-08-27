@@ -211,3 +211,6 @@
 - [x] Auditer les timings actuels des transitions entre les pages.
 - [x] Ralentir et équilibrer les transitions de routes pour un rendu plus cinématique.
 - [x] Valider les transitions sur desktop, mobile et avec `prefers-reduced-motion`, puis enregistrer un checkpoint.
+
+- [x] Augmenter encore la durée du balayage aqua entre les pages.
+- [x] Synchroniser sa disparition avec la transition de route et valider le rendu.
