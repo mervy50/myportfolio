@@ -25,6 +25,7 @@ const mocks = vi.hoisted(() => ({
   updatePortfolioSkill: vi.fn(),
   updatePortfolioProject: vi.fn(),
   notifyOwner: vi.fn(),
+  sendContactEmail: vi.fn(),
 }));
 
 vi.mock("./db", () => ({
@@ -60,6 +61,7 @@ vi.mock("./db", () => ({
   reorderPortfolioEducation: vi.fn(),
 }));
 vi.mock("./_core/notification", () => ({ notifyOwner: mocks.notifyOwner }));
+vi.mock("./mail", () => ({ sendContactEmail: mocks.sendContactEmail }));
 
 import { appRouter } from "./routers";
 
@@ -74,6 +76,7 @@ describe("contact.send", () => {
     vi.clearAllMocks();
     mocks.createContactMessage.mockResolvedValue({ id: 42 });
     mocks.notifyOwner.mockResolvedValue(true);
+    mocks.sendContactEmail.mockResolvedValue(undefined);
   });
 
   it("enregistre le message et notifie la propriétaire", async () => {
@@ -86,6 +89,7 @@ describe("contact.send", () => {
     expect(result).toEqual({ success: true, id: 42 });
     expect(mocks.createContactMessage).toHaveBeenCalledOnce();
     expect(mocks.notifyOwner).toHaveBeenCalledOnce();
+    expect(mocks.sendContactEmail).toHaveBeenCalledWith(expect.objectContaining({ name: "Merveille", email: "mervylokodade50@gmail.com" }));
   });
 
   it("retourne une erreur quand la base est indisponible", async () => {

@@ -228,3 +228,8 @@
 - [x] Préparer et pousser la version Tech Stack vers `mervy50/myportfolio`.
 - [x] Vérifier l’état distant et documenter les limites de GitHub Pages pour le backend full-stack.
 - [x] Fournir les commandes locales et les options d’hébergement compatibles.
+
+- [x] Remplacer l’envoi Gmail SMTP du formulaire de contact par l’API HTTPS Resend.
+- [x] Ajouter la configuration sécurisée Resend et les tests d’envoi sans transmettre de secrets au frontend.
+- [ ] Préparer la séparation frontend Vercel et backend Render avec URL API configurable et CORS sécurisé.
+- [ ] Documenter les variables Vercel/Render et valider le build avant déploiement.

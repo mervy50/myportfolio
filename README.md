@@ -10,7 +10,7 @@ cd myportfolio
 pnpm install
 ```
 
-Configurez les variables d’environnement nécessaires dans votre environnement local, notamment `DATABASE_URL`, `JWT_SECRET`, les variables OAuth, les variables S3/Forge et les variables SMTP si vous souhaitez tester le formulaire de contact. Ne committez jamais de fichier `.env` contenant des secrets.
+Configurez les variables d’environnement nécessaires dans votre environnement local, notamment `DATABASE_URL`, `JWT_SECRET`, les variables OAuth, les variables S3/Forge, `RESEND_API_KEY`, `RESEND_FROM_EMAIL` et `CONTACT_RECEIVER_EMAIL`. Resend doit disposer d’une adresse expéditrice ou d’un domaine vérifié. Ne committez jamais de fichier `.env` contenant des secrets.
 
 Synchronisez la base avec le schéma du projet, puis lancez le serveur de développement :
 
@@ -26,7 +26,7 @@ pnpm test
 pnpm build
 ```
 
-Le compte administrateur dépend de l’authentification OAuth configurée et du rôle `admin` enregistré en base. Les secrets de production doivent être ajoutés dans l’interface de gestion de l’hébergement choisi, jamais dans le dépôt GitHub.
+Le compte administrateur dépend de l’authentification OAuth configurée et du rôle `admin` enregistré en base. Les secrets de production doivent être ajoutés dans l’interface de l’hébergement choisi, jamais dans le dépôt GitHub. Pour Render, ajoutez notamment `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CONTACT_RECEIVER_EMAIL`, `DATABASE_URL`, les variables OAuth et les variables S3/Forge. Le frontend Vercel ne doit recevoir que les variables préfixées `VITE_` nécessaires au navigateur. GitHub Pages ne convient pas à cette architecture, car le backend doit rester exécuté sur un hébergeur Node.js.
 
 
 ## Accès au panel administrateur
