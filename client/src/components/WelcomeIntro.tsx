@@ -9,8 +9,8 @@ export default function WelcomeIntro({ onComplete }: WelcomeIntroProps) {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const closeDelay = reducedMotion ? 500 : 4600;
-    const completeDelay = reducedMotion ? 750 : 5400;
+    const closeDelay = reducedMotion ? 400 : 3800;
+    const completeDelay = reducedMotion ? 650 : 4600;
     const closeTimer = window.setTimeout(() => setIsClosing(true), closeDelay);
     const completeTimer = window.setTimeout(onComplete, completeDelay);
 
@@ -31,7 +31,6 @@ export default function WelcomeIntro({ onComplete }: WelcomeIntroProps) {
       <div className="welcome-intro__orb welcome-intro__orb--one" aria-hidden="true" />
       <div className="welcome-intro__orb welcome-intro__orb--two" aria-hidden="true" />
       <div className="welcome-intro__content">
-        <p className="welcome-intro__eyebrow">LOKO-DADE. / PORTFOLIO</p>
         <div className="welcome-intro__message" aria-label="Welcome to my Portfolio Website">
           <span className="welcome-intro__word welcome-intro__word--left">Welcome to my</span>
           <span className="welcome-intro__word welcome-intro__word--right">Portfolio Website</span>

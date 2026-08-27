@@ -86,12 +86,12 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
 .welcome-intro__orb--one { left: -12vw; top: 20%; animation: introOrbFloat 5.6s ease-in-out infinite alternate; }
 .welcome-intro__orb--two { right: -13vw; bottom: 15%; transform: rotate(34deg) scale(.72); opacity: .55; animation: introOrbFloat 6.4s ease-in-out -1.2s infinite alternate-reverse; }
 .welcome-intro__content { position: relative; z-index: 1; width: min(1040px, calc(100% - 40px)); text-align: center; }
-.welcome-intro__eyebrow { margin: 0 0 34px; color: var(--aqua); font: 10px 'JetBrains Mono', monospace; letter-spacing: .22em; text-transform: uppercase; opacity: 0; animation: introEyebrowIn .7s var(--ease) .25s forwards; }
+.welcome-intro__eyebrow { display: none; }
 .welcome-intro__message { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 38px); width: 100%; overflow: hidden; font: 700 clamp(30px, 5.2vw, 70px)/.98 'Sora', sans-serif; letter-spacing: -.075em; white-space: normal; }
 .welcome-intro__word { display: block; opacity: 0; }
-.welcome-intro__word--left { color: var(--text); animation: introWordLeft 1.25s var(--ease) .4s forwards; }
-.welcome-intro__word--right { color: var(--aqua); animation: introWordRight 1.25s var(--ease) .4s forwards; }
-.welcome-intro__rule { display: block; width: min(260px, 45vw); height: 1px; margin: 30px auto 0; background: linear-gradient(90deg, transparent, var(--aqua), transparent); transform: scaleX(0); opacity: .8; animation: introRuleIn .85s var(--ease) 1.35s forwards; }
+.welcome-intro__word--left { color: var(--text); animation: introWordLeft 1.25s var(--ease) .12s forwards; }
+.welcome-intro__word--right { color: var(--aqua); animation: introWordRight 1.25s var(--ease) .12s forwards; }
+.welcome-intro__rule { display: block; width: min(260px, 45vw); height: 1px; margin: 30px auto 0; background: linear-gradient(90deg, transparent, var(--aqua), transparent); transform: scaleX(0); opacity: .8; animation: introRuleIn .85s var(--ease) 1.05s forwards; }
 .welcome-intro__skip { position: absolute; right: 28px; bottom: 24px; z-index: 2; border: 1px solid rgba(238,247,247,.18); border-radius: 999px; padding: 9px 13px; background: rgba(5,7,8,.74); color: var(--muted); cursor: pointer; font: 9px 'JetBrains Mono', monospace; transition: color .2s ease, border-color .2s ease, transform .16s var(--ease); }
 .welcome-intro__skip:hover, .welcome-intro__skip:focus-visible { color: var(--aqua); border-color: var(--aqua); }
 .welcome-intro__skip:active { transform: scale(.96); }
@@ -117,9 +117,18 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
 .aqua-button:active::after, .round-link:active::after { transform: scale(12); opacity: 0; }
 .site-nav a::before { content: ''; position: absolute; left: 3px; right: 3px; bottom: 2px; height: 1px; background: var(--aqua); transform: scaleX(0); transform-origin: right; transition: transform .24s var(--ease); }
 .site-nav a:hover::before, .site-nav a:focus-visible::before { transform: scaleX(1); transform-origin: left; }
+.showcase-card { position: relative; overflow: hidden; isolation: isolate; }
+.showcase-card::before { content: ''; position: absolute; inset: -20%; z-index: 0; pointer-events: none; background: linear-gradient(115deg, transparent 34%, rgba(99,230,232,.16) 49%, rgba(238,247,247,.08) 52%, transparent 66%); transform: translateX(-115%) skewX(-18deg); transition: transform .9s var(--ease); }
+.showcase-card > * { position: relative; z-index: 1; }
+.showcase-card:hover::before, .showcase-card:focus-within::before { transform: translateX(115%) skewX(-18deg); }
+.showcase-preview { transition: transform .8s var(--ease), border-color .55s ease, box-shadow .55s ease; }
+.showcase-preview::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(circle at 78% 20%, rgba(99,230,232,.2), transparent 38%), linear-gradient(120deg, transparent 35%, rgba(255,255,255,.08), transparent 65%); transition: opacity .65s ease; }
+.showcase-card:hover .showcase-preview, .showcase-card:focus-within .showcase-preview { transform: scale(1.018); border-color: rgba(99,230,232,.5); box-shadow: inset 0 0 35px rgba(99,230,232,.08); }
+.showcase-card:hover .showcase-preview::after, .showcase-card:focus-within .showcase-preview::after { opacity: 1; }
+.showcase-card .round-link { transition: transform .45s var(--ease), background-color .35s ease, box-shadow .35s ease; }
+.showcase-card:hover .round-link, .showcase-card:focus-within .round-link { transform: translate(2px, -2px) rotate(4deg); box-shadow: 0 0 0 7px rgba(99,230,232,.1), 0 0 24px rgba(99,230,232,.25); }
 @keyframes introWordLeft { 0% { opacity: 0; transform: translateX(-60vw); } 70% { opacity: 1; } 100% { opacity: 1; transform: translateX(0); } }
 @keyframes introWordRight { 0% { opacity: 0; transform: translateX(60vw); } 70% { opacity: 1; } 100% { opacity: 1; transform: translateX(0); } }
-@keyframes introEyebrowIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: .8; transform: translateY(0); } }
 @keyframes introRuleIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes introOrbFloat { from { transform: rotate(-28deg) translate3d(-12px, 8px, 0); } to { transform: rotate(-20deg) translate3d(12px, -8px, 0); } }
 @keyframes introExit { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.025); visibility: hidden; } }
@@ -131,6 +140,8 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
   html { scroll-behavior: auto; }
   .welcome-intro, .welcome-intro__grid, .welcome-intro__orb, .welcome-intro__eyebrow, .welcome-intro__word, .welcome-intro__rule, .route-sweep, .page-transition, .page-transition > main > *, .featured-card, .showcase-card, .skill-card, .cert-card, .stack-card, .stat-card, .education-row, .contact-form, .contact-info, .detail-hero, .side-card { animation: none !important; }
   .welcome-intro__eyebrow, .welcome-intro__word { opacity: 1; }
+  .showcase-card::before, .showcase-preview::after { transition: none; }
+  .showcase-card:hover .showcase-preview, .showcase-card:focus-within .showcase-preview, .showcase-card:hover .round-link, .showcase-card:focus-within .round-link { transform: none; box-shadow: none; }
   .welcome-intro__rule { transform: scaleX(1); }
   .welcome-intro__skip { transition: none; }
   .aqua-button::after, .round-link::after { transition: none; }

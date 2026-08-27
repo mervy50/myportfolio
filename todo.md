@@ -191,3 +191,8 @@
 - [x] Respecter `prefers-reduced-motion`, tester desktop/mobile et enregistrer un checkpoint.
 
 - [x] Enregistrer un checkpoint dédié après l’introduction plein écran et le ralentissement des transitions.
+
+- [x] Retirer la mention « LOKO-DADE. / PORTFOLIO » de l’introduction.
+- [x] Réduire le temps d’écran noir avant l’animation principale de l’intro.
+- [x] Ajouter un effet de survol élégant et accessible sur les cartes de projets.
+- [x] Vérifier desktop/mobile, tester et enregistrer un checkpoint.
