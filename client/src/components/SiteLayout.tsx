@@ -27,7 +27,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     if (previousLocation.current === location) return;
     previousLocation.current = location;
     setRouteIsChanging(true);
-    const timeout = window.setTimeout(() => setRouteIsChanging(false), 480);
+    const timeout = window.setTimeout(() => setRouteIsChanging(false), 1200);
     return () => window.clearTimeout(timeout);
   }, [location]);
   useEffect(() => {

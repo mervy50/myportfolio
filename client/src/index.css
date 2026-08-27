@@ -97,21 +97,21 @@ h2 { font-size: clamp(27px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06e
 .welcome-intro__skip:active { transform: scale(.96); }
 .welcome-intro.is-closing { animation: introExit .8s var(--ease) forwards; pointer-events: none; }
 .route-sweep { position: fixed; inset: 0 auto 0 0; width: 2px; background: linear-gradient(180deg, transparent, var(--aqua), transparent); box-shadow: 0 0 28px 8px rgba(99,230,232,.35); transform: translateX(-12px); opacity: 0; pointer-events: none; z-index: 30; }
-.route-sweep.is-visible { animation: routeSweep .72s var(--ease) both; }
-.page-transition { animation: pageEnter .72s var(--ease) both; transform-origin: 50% 0; }
-.page-transition > main > * { animation: sectionReveal .78s var(--ease) both; }
-.featured-card, .showcase-card, .skill-card, .cert-card, .stack-card, .stat-card, .education-row, .contact-form, .contact-info, .detail-hero, .side-card { animation: blockReveal .88s var(--ease) both; }
-.featured-card:nth-child(2), .showcase-card:nth-child(2), .skill-card:nth-child(2), .cert-card:nth-child(2), .stack-card:nth-child(2), .stat-card:nth-child(2), .education-row:nth-child(2) { animation-delay: .06s; }
-.featured-card:nth-child(3), .showcase-card:nth-child(3), .skill-card:nth-child(3), .cert-card:nth-child(3), .stack-card:nth-child(3), .stat-card:nth-child(3), .education-row:nth-child(3) { animation-delay: .12s; }
+.route-sweep.is-visible { animation: routeSweep 1.15s var(--ease) both; }
+.page-transition { animation: pageEnter 1.1s var(--ease) both; transform-origin: 50% 0; }
+.page-transition > main > * { animation: sectionReveal 1.18s var(--ease) both; }
+.featured-card, .showcase-card, .skill-card, .cert-card, .stack-card, .stat-card, .education-row, .contact-form, .contact-info, .detail-hero, .side-card { animation: blockReveal 1.08s var(--ease) both; }
+.featured-card:nth-child(2), .showcase-card:nth-child(2), .skill-card:nth-child(2), .cert-card:nth-child(2), .stack-card:nth-child(2), .stat-card:nth-child(2), .education-row:nth-child(2) { animation-delay: .08s; }
+.featured-card:nth-child(3), .showcase-card:nth-child(3), .skill-card:nth-child(3), .cert-card:nth-child(3), .stack-card:nth-child(3), .stat-card:nth-child(3), .education-row:nth-child(3) { animation-delay: .16s; }
 .featured-card:nth-child(4), .showcase-card:nth-child(4), .skill-card:nth-child(4), .cert-card:nth-child(4), .stack-card:nth-child(4), .stat-card:nth-child(4), .education-row:nth-child(4) { animation-delay: .18s; }
 .featured-card, .showcase-card, .skill-card, .cert-card, .stack-card, .stat-card, .contact-form, .contact-info, .detail-hero, .side-card { transition: transform .24s var(--ease), border-color .24s ease, box-shadow .24s ease; }
 .featured-card:hover, .showcase-card:hover, .skill-card:hover, .cert-card:hover, .stack-card:hover, .contact-form:hover, .contact-info:hover, .detail-hero:hover, .side-card:hover { transform: translateY(-5px); border-color: rgba(99,230,232,.38); box-shadow: 0 18px 42px rgba(0,0,0,.18); }
 .stat-card:hover { transform: translateY(-4px) scale(1.01); }
 .tab:active, .admin-tab:active, .icon-button:active, .aqua-button:active, .outline-button:active, .round-link:active { transform: scale(.96); }
-.page-transition > main > *:nth-child(2) { animation-delay: .04s; }
-.page-transition > main > *:nth-child(3) { animation-delay: .08s; }
-.page-transition > main > *:nth-child(4) { animation-delay: .12s; }
-.page-transition > main > *:nth-child(5) { animation-delay: .16s; }
+.page-transition > main > *:nth-child(2) { animation-delay: .08s; }
+.page-transition > main > *:nth-child(3) { animation-delay: .16s; }
+.page-transition > main > *:nth-child(4) { animation-delay: .24s; }
+.page-transition > main > *:nth-child(5) { animation-delay: .32s; }
 .aqua-button, .round-link { position: relative; overflow: hidden; }
 .aqua-button::after, .round-link::after { content: ''; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,.44); pointer-events: none; transform: scale(0); opacity: .36; transition: transform .42s var(--ease), opacity .42s var(--ease); }
 .aqua-button:active::after, .round-link:active::after { transform: scale(12); opacity: 0; }

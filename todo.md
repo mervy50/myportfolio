@@ -207,3 +207,7 @@
 
 - [x] Supprimer complètement le repère aqua de préchargement.
 - [x] Vérifier que l’introduction apparaît directement sur desktop et mobile, puis enregistrer un checkpoint.
+
+- [x] Auditer les timings actuels des transitions entre les pages.
+- [x] Ralentir et équilibrer les transitions de routes pour un rendu plus cinématique.
+- [x] Valider les transitions sur desktop, mobile et avec `prefers-reduced-motion`, puis enregistrer un checkpoint.
