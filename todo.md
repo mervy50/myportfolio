@@ -237,3 +237,7 @@
 - [x] Reproduire les erreurs de la page Admin et collecter les logs concernés.
 - [x] Corriger la cause racine sans régression des accès, CRUD, statistiques ou uploads.
 - [x] Ajouter ou renforcer les tests concernés et valider l’Admin sur desktop/mobile.
+
+- [ ] Vérifier l’état final Git, les tests, le build et l’absence de secrets avant le push.
+- [ ] Pousser la version validée sur `mervy50/myportfolio` et confirmer le commit distant.
+- [ ] Fournir à l’utilisateur les étapes Vercel/Render qu’il exécutera lui-même.
