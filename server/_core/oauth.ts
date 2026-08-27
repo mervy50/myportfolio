@@ -1,4 +1,5 @@
-import { COOKIE_NAME, ONE_YEAR_MS, OAUTH_STATE_COOKIE, decodeOAuthState } from "@shared/const";
+import { randomUUID } from "node:crypto";
+import { ADMIN_PATH, COOKIE_NAME, ONE_YEAR_MS, OAUTH_STATE_COOKIE, decodeOAuthState, encodeOAuthState } from "@shared/const";
 import { parse as parseCookieHeader } from "cookie";
 import type { Express, Request, Response } from "express";
 import * as db from "../db";
@@ -15,7 +16,37 @@ function safeReturnPath(value: string | undefined) {
   return value;
 }
 
+function getFrontendRedirect(returnPath: string | undefined) {
+  const targetPath = safeReturnPath(returnPath || ADMIN_PATH);
+  const frontendUrl = process.env.FRONTEND_URL?.trim();
+  if (!frontendUrl) return targetPath;
+  return `${frontendUrl.replace(/\/+$/, "")}${targetPath}`;
+}
+
 export function registerOAuthRoutes(app: Express) {
+  app.get("/api/oauth/start", (req: Request, res: Response) => {
+    const oauthPortalUrl = process.env.VITE_OAUTH_PORTAL_URL;
+    const appId = process.env.VITE_APP_ID;
+    if (!oauthPortalUrl || !appId) {
+      res.status(500).json({ error: "OAuth configuration is incomplete" });
+      return;
+    }
+
+    const nonce = randomUUID();
+    const returnPath = safeReturnPath(getQueryParam(req, "returnPath"));
+    const redirectUri = `${req.protocol}://${req.get("host")}/api/oauth/callback`;
+    const state = encodeOAuthState({ redirectUri, nonce, returnPath });
+    const cookieOptions = getSessionCookieOptions(req);
+    res.cookie(OAUTH_STATE_COOKIE, nonce, { ...cookieOptions, httpOnly: true, maxAge: 10 * 60 * 1000 });
+
+    const url = new URL(`${oauthPortalUrl.replace(/\/+$/, "")}/app-auth`);
+    url.searchParams.set("appId", appId);
+    url.searchParams.set("redirectUri", redirectUri);
+    url.searchParams.set("state", state);
+    url.searchParams.set("type", "signIn");
+    res.redirect(302, url.toString());
+  });
+
   app.get("/api/oauth/callback", async (req: Request, res: Response) => {
     const code = getQueryParam(req, "code");
     const state = getQueryParam(req, "state");
@@ -61,7 +92,7 @@ export function registerOAuthRoutes(app: Express) {
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
-      res.redirect(302, safeReturnPath(returnPath));
+      res.redirect(302, getFrontendRedirect(returnPath));
     } catch (error) {
       console.error("[OAuth] Callback failed", error);
       res.status(500).json({ error: "OAuth callback failed" });

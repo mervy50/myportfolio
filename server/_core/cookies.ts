@@ -39,12 +39,14 @@ export function getSessionCookieOptions(
   //       ? hostname
   //       : undefined;
 
+  const hasSeparateFrontend = Boolean(process.env.FRONTEND_URL);
+
   return {
     httpOnly: true,
     path: "/",
-    // OAuth returns from another top-level origin. Lax still permits that
-    // redirect while remaining compatible when the proxy terminates TLS.
-    sameSite: "lax",
-    secure: isSecureRequest(req),
+    // Cross-origin fetches from Vercel to Render require SameSite=None and
+    // Secure. Keep Lax for the current same-origin/local setup.
+    sameSite: hasSeparateFrontend ? "none" : "lax",
+    secure: hasSeparateFrontend ? true : isSecureRequest(req),
   };
 }

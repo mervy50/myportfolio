@@ -231,5 +231,5 @@
 
 - [x] Remplacer l’envoi Gmail SMTP du formulaire de contact par l’API HTTPS Resend.
 - [x] Ajouter la configuration sécurisée Resend et les tests d’envoi sans transmettre de secrets au frontend.
-- [ ] Préparer la séparation frontend Vercel et backend Render avec URL API configurable et CORS sécurisé.
-- [ ] Documenter les variables Vercel/Render et valider le build avant déploiement.
+- [x] Préparer la séparation frontend Vercel et backend Render avec URL API configurable et CORS sécurisé.
+- [x] Documenter les variables Vercel/Render et valider le build avant déploiement.

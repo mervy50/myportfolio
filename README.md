@@ -26,7 +26,7 @@ pnpm test
 pnpm build
 ```
 
-Le compte administrateur dépend de l’authentification OAuth configurée et du rôle `admin` enregistré en base. Les secrets de production doivent être ajoutés dans l’interface de l’hébergement choisi, jamais dans le dépôt GitHub. Pour Render, ajoutez notamment `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CONTACT_RECEIVER_EMAIL`, `DATABASE_URL`, les variables OAuth et les variables S3/Forge. Le frontend Vercel ne doit recevoir que les variables préfixées `VITE_` nécessaires au navigateur. GitHub Pages ne convient pas à cette architecture, car le backend doit rester exécuté sur un hébergeur Node.js.
+Le compte administrateur dépend de l’authentification OAuth configurée et du rôle `admin` enregistré en base. Les secrets de production doivent être ajoutés dans l’interface de l’hébergement choisi, jamais dans le dépôt GitHub. Pour Render, ajoutez notamment `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CONTACT_RECEIVER_EMAIL`, `DATABASE_URL`, `FRONTEND_URL`, les variables OAuth et les variables S3/Forge. Pour Vercel, ajoutez `VITE_API_URL` avec l’URL publique Render, ainsi que les variables `VITE_` nécessaires au navigateur. Le backend autorise uniquement les origines listées dans `FRONTEND_URL`, séparées par des virgules si nécessaire. OAuth démarre désormais sur Render afin que le cookie de session reste attaché au domaine API. GitHub Pages ne convient pas à cette architecture, car le backend doit rester exécuté sur un hébergeur Node.js.
 
 
 ## Accès au panel administrateur
