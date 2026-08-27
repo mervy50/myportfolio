@@ -233,3 +233,7 @@
 - [x] Ajouter la configuration sécurisée Resend et les tests d’envoi sans transmettre de secrets au frontend.
 - [x] Préparer la séparation frontend Vercel et backend Render avec URL API configurable et CORS sécurisé.
 - [x] Documenter les variables Vercel/Render et valider le build avant déploiement.
+
+- [x] Reproduire les erreurs de la page Admin et collecter les logs concernés.
+- [x] Corriger la cause racine sans régression des accès, CRUD, statistiques ou uploads.
+- [x] Ajouter ou renforcer les tests concernés et valider l’Admin sur desktop/mobile.

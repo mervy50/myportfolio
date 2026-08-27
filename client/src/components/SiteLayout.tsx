@@ -5,6 +5,7 @@ import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { getAnalyticsSessionId } from "@/lib/analytics";
 import { defaultSiteContent } from "@/lib/site-content";
+import { ADMIN_PATH } from "@/admin-path";
 
 type TransitionVariant = "forward" | "backward" | "focus" | "return";
 
@@ -50,7 +51,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     return () => window.clearTimeout(timeout);
   }, [location]);
   useEffect(() => {
-    if (location === "/admin") return;
+    if (location === ADMIN_PATH || location.startsWith(`${ADMIN_PATH}/`)) return;
     try {
       if (sessionStorage.getItem("portfolio-analytics-visit-sent")) return;
       sessionStorage.setItem("portfolio-analytics-visit-sent", "1");

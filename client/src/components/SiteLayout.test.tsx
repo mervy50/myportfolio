@@ -6,7 +6,9 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/lib/trpc", () => ({ trpc: { portfolio: { profile: { get: { useQuery: () => ({ data: { email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example" } }) } }, content: { get: { useQuery: () => ({ data: null }) } }, analytics: { trackVisit: { useMutation: () => ({ mutate: vi.fn() }) }, trackSocialClick: { useMutation: () => ({ mutate: vi.fn() }) } } } } }));
+const analyticsMocks = vi.hoisted(() => ({ trackVisit: vi.fn(), trackSocialClick: vi.fn() }));
+
+vi.mock("@/lib/trpc", () => ({ trpc: { portfolio: { profile: { get: { useQuery: () => ({ data: { email: "owner@example.com", github: "https://github.com/example", linkedin: "https://linkedin.com/example" } }) } }, content: { get: { useQuery: () => ({ data: null }) } }, analytics: { trackVisit: { useMutation: () => ({ mutate: analyticsMocks.trackVisit }) }, trackSocialClick: { useMutation: () => ({ mutate: analyticsMocks.trackSocialClick }) } } } } }));
 import SiteLayout from "./SiteLayout";
 
 function renderLayout() {
@@ -17,6 +19,7 @@ function renderLayout() {
 afterEach(() => {
   cleanup();
   window.history.pushState({}, "", "/");
+  vi.clearAllMocks();
 });
 
 describe("SiteLayout navigation", () => {
@@ -28,6 +31,13 @@ describe("SiteLayout navigation", () => {
     expect(stylesheet).toContain("@media (prefers-reduced-motion: reduce) {");
     expect(stylesheet).toContain("@keyframes sectionReveal");
     expect(stylesheet).toContain(".aqua-button:active::after");
+  });
+
+  it("does not track visits from the private admin route", () => {
+    window.history.pushState({}, "", "/espace-prive-mervy");
+    render(<SiteLayout><main>Admin</main></SiteLayout>);
+
+    expect(analyticsMocks.trackVisit).not.toHaveBeenCalled();
   });
 
   it("navigates with a click and no longer displays section numbers", async () => {
