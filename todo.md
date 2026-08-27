@@ -190,4 +190,4 @@
 - [x] Ralentir les transitions entre pages et les apparitions des blocs avec un rythme lisible.
 - [x] Respecter `prefers-reduced-motion`, tester desktop/mobile et enregistrer un checkpoint.
 
-- [ ] Enregistrer un checkpoint dédié après l’introduction plein écran et le ralentissement des transitions.
+- [x] Enregistrer un checkpoint dédié après l’introduction plein écran et le ralentissement des transitions.
